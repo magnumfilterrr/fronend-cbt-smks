@@ -5,6 +5,7 @@ import 'package:ujian_online_smks/core/constants/colors.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/daftar_soal/daftar_soal_bloc.dart';
 // import 'package:ujian_online_smks/persentation/ujian/bloc/hitung_nilai/hitung_nilai_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/jawaban/jawaban_bloc.dart';
+// import 'package:ujian_online_smks/persentation/ujian/bloc/ujian/ujian_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/pages/quiz_result_page.dart';
 import 'package:ujian_online_smks/persentation/ujian/widgets/answer_choices.dart';
 // import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_result_last.dart';
@@ -29,6 +30,7 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
   void initState() {
     super.initState();
     context.read<DaftarSoalBloc>().add(DaftarSoalEvent.started(widget.id));
+    // context.read<UjianBloc>().add(UjianEvent.checkStatus(widget.id));
   }
 
   @override
@@ -86,6 +88,24 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
         //       error: (message) {
         //         ScaffoldMessenger.of(context).showSnackBar(
         //           SnackBar(content: Text('Error nilai: $message')),
+        //         );
+        //       },
+        //       orElse: () {},
+        //     );
+        //   },
+        // ),
+
+        // BlocListener<UjianBloc, UjianState>(
+        //   listener: (context, state) {
+        //     state.maybeWhen(
+        //       statusLoaded: (status) {
+        //         ScaffoldMessenger.of(context).showSnackBar(
+        //           SnackBar(content: Text('Status ujian diperbarui: $status')),
+        //         );
+        //       },
+        //       error: (message) {
+        //         ScaffoldMessenger.of(context).showSnackBar(
+        //           SnackBar(content: Text('Error status ujian: $message')),
         //         );
         //       },
         //       orElse: () {},

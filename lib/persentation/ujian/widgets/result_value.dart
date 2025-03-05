@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/colors.dart';
 
 class ResultValue extends StatelessWidget {
-  final int value;
+  final double value;
   final String label;
   final Color color;
 

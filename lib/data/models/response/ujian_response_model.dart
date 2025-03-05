@@ -16,11 +16,12 @@ class UjianResponseModel {
 
   String toRawJson() => json.encode(toJson());
 
-  factory UjianResponseModel.fromJson(Map<String, dynamic> json) => UjianResponseModel(
-      status: json["status"],
-      message: json["message"],
-      data: List<Ujian>.from(json["data"].map((x) => Ujian.fromJson(x))),
-  );
+  factory UjianResponseModel.fromJson(Map<String, dynamic> json) =>
+      UjianResponseModel(
+        status: json["status"],
+        message: json["message"],
+        data: List<Ujian>.from(json["data"].map((x) => Ujian.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
         "status": status,
@@ -38,6 +39,7 @@ class Ujian {
   final int durasiUjian;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String status;
 
   Ujian({
     required this.id,
@@ -48,6 +50,7 @@ class Ujian {
     required this.durasiUjian,
     required this.createdAt,
     required this.updatedAt,
+    required this.status,
   });
 
   factory Ujian.fromRawJson(String str) => Ujian.fromJson(json.decode(str));
@@ -55,16 +58,18 @@ class Ujian {
   String toRawJson() => json.encode(toJson());
 
   factory Ujian.fromJson(Map<String, dynamic> json) => Ujian(
-    id: json["id"],
-    mataPelajaranId: json["mata_pelajaran_id"],
-    kelasId: json["kelas_id"],
-    judulUjian: json["judul_ujian"],
-    tanggalUjian: DateTime.parse(
-        json["tanggal_ujian"].replaceAll(" ", "T") + "Z"), // Format ke ISO 8601
-    durasiUjian: json["durasi_ujian"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-);
+        id: json["id"],
+        mataPelajaranId: json["mata_pelajaran_id"],
+        kelasId: json["kelas_id"],
+        judulUjian: json["judul_ujian"],
+        tanggalUjian: DateTime.parse(
+            json["tanggal_ujian"].replaceAll(" ", "T") +
+                "Z"), // Format ke ISO 8601
+        durasiUjian: json["durasi_ujian"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        status: json["status"],
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -75,5 +80,6 @@ class Ujian {
         "durasi_ujian": durasiUjian,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
+        "status": status,
       };
 }

@@ -20,18 +20,24 @@ mixin _$UjianEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getAllUjian,
+    required TResult Function(String id) checkStatus,
+    required TResult Function(String id, String status) updateStatusUjian,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getAllUjian,
+    TResult? Function(String id)? checkStatus,
+    TResult? Function(String id, String status)? updateStatusUjian,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getAllUjian,
+    TResult Function(String id)? checkStatus,
+    TResult Function(String id, String status)? updateStatusUjian,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -39,18 +45,24 @@ mixin _$UjianEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_GetAllUjian value) getAllUjian,
+    required TResult Function(_CheckStatus value) checkStatus,
+    required TResult Function(_UpdateStatusUjian value) updateStatusUjian,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_GetAllUjian value)? getAllUjian,
+    TResult? Function(_CheckStatus value)? checkStatus,
+    TResult? Function(_UpdateStatusUjian value)? updateStatusUjian,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_GetAllUjian value)? getAllUjian,
+    TResult Function(_CheckStatus value)? checkStatus,
+    TResult Function(_UpdateStatusUjian value)? updateStatusUjian,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,6 +126,8 @@ class _$StartedImpl implements _Started {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getAllUjian,
+    required TResult Function(String id) checkStatus,
+    required TResult Function(String id, String status) updateStatusUjian,
   }) {
     return started();
   }
@@ -123,6 +137,8 @@ class _$StartedImpl implements _Started {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getAllUjian,
+    TResult? Function(String id)? checkStatus,
+    TResult? Function(String id, String status)? updateStatusUjian,
   }) {
     return started?.call();
   }
@@ -132,6 +148,8 @@ class _$StartedImpl implements _Started {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getAllUjian,
+    TResult Function(String id)? checkStatus,
+    TResult Function(String id, String status)? updateStatusUjian,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -145,6 +163,8 @@ class _$StartedImpl implements _Started {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_GetAllUjian value) getAllUjian,
+    required TResult Function(_CheckStatus value) checkStatus,
+    required TResult Function(_UpdateStatusUjian value) updateStatusUjian,
   }) {
     return started(this);
   }
@@ -154,6 +174,8 @@ class _$StartedImpl implements _Started {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_GetAllUjian value)? getAllUjian,
+    TResult? Function(_CheckStatus value)? checkStatus,
+    TResult? Function(_UpdateStatusUjian value)? updateStatusUjian,
   }) {
     return started?.call(this);
   }
@@ -163,6 +185,8 @@ class _$StartedImpl implements _Started {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_GetAllUjian value)? getAllUjian,
+    TResult Function(_CheckStatus value)? checkStatus,
+    TResult Function(_UpdateStatusUjian value)? updateStatusUjian,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -216,6 +240,8 @@ class _$GetAllUjianImpl implements _GetAllUjian {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function() getAllUjian,
+    required TResult Function(String id) checkStatus,
+    required TResult Function(String id, String status) updateStatusUjian,
   }) {
     return getAllUjian();
   }
@@ -225,6 +251,8 @@ class _$GetAllUjianImpl implements _GetAllUjian {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function()? getAllUjian,
+    TResult? Function(String id)? checkStatus,
+    TResult? Function(String id, String status)? updateStatusUjian,
   }) {
     return getAllUjian?.call();
   }
@@ -234,6 +262,8 @@ class _$GetAllUjianImpl implements _GetAllUjian {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function()? getAllUjian,
+    TResult Function(String id)? checkStatus,
+    TResult Function(String id, String status)? updateStatusUjian,
     required TResult orElse(),
   }) {
     if (getAllUjian != null) {
@@ -247,6 +277,8 @@ class _$GetAllUjianImpl implements _GetAllUjian {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_GetAllUjian value) getAllUjian,
+    required TResult Function(_CheckStatus value) checkStatus,
+    required TResult Function(_UpdateStatusUjian value) updateStatusUjian,
   }) {
     return getAllUjian(this);
   }
@@ -256,6 +288,8 @@ class _$GetAllUjianImpl implements _GetAllUjian {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_GetAllUjian value)? getAllUjian,
+    TResult? Function(_CheckStatus value)? checkStatus,
+    TResult? Function(_UpdateStatusUjian value)? updateStatusUjian,
   }) {
     return getAllUjian?.call(this);
   }
@@ -265,6 +299,8 @@ class _$GetAllUjianImpl implements _GetAllUjian {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_GetAllUjian value)? getAllUjian,
+    TResult Function(_CheckStatus value)? checkStatus,
+    TResult Function(_UpdateStatusUjian value)? updateStatusUjian,
     required TResult orElse(),
   }) {
     if (getAllUjian != null) {
@@ -279,6 +315,307 @@ abstract class _GetAllUjian implements UjianEvent {
 }
 
 /// @nodoc
+abstract class _$$CheckStatusImplCopyWith<$Res> {
+  factory _$$CheckStatusImplCopyWith(
+          _$CheckStatusImpl value, $Res Function(_$CheckStatusImpl) then) =
+      __$$CheckStatusImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String id});
+}
+
+/// @nodoc
+class __$$CheckStatusImplCopyWithImpl<$Res>
+    extends _$UjianEventCopyWithImpl<$Res, _$CheckStatusImpl>
+    implements _$$CheckStatusImplCopyWith<$Res> {
+  __$$CheckStatusImplCopyWithImpl(
+      _$CheckStatusImpl _value, $Res Function(_$CheckStatusImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_$CheckStatusImpl(
+      null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CheckStatusImpl implements _CheckStatus {
+  const _$CheckStatusImpl(this.id);
+
+  @override
+  final String id;
+
+  @override
+  String toString() {
+    return 'UjianEvent.checkStatus(id: $id)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CheckStatusImpl &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CheckStatusImplCopyWith<_$CheckStatusImpl> get copyWith =>
+      __$$CheckStatusImplCopyWithImpl<_$CheckStatusImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function() getAllUjian,
+    required TResult Function(String id) checkStatus,
+    required TResult Function(String id, String status) updateStatusUjian,
+  }) {
+    return checkStatus(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function()? getAllUjian,
+    TResult? Function(String id)? checkStatus,
+    TResult? Function(String id, String status)? updateStatusUjian,
+  }) {
+    return checkStatus?.call(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function()? getAllUjian,
+    TResult Function(String id)? checkStatus,
+    TResult Function(String id, String status)? updateStatusUjian,
+    required TResult orElse(),
+  }) {
+    if (checkStatus != null) {
+      return checkStatus(id);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_GetAllUjian value) getAllUjian,
+    required TResult Function(_CheckStatus value) checkStatus,
+    required TResult Function(_UpdateStatusUjian value) updateStatusUjian,
+  }) {
+    return checkStatus(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_GetAllUjian value)? getAllUjian,
+    TResult? Function(_CheckStatus value)? checkStatus,
+    TResult? Function(_UpdateStatusUjian value)? updateStatusUjian,
+  }) {
+    return checkStatus?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_GetAllUjian value)? getAllUjian,
+    TResult Function(_CheckStatus value)? checkStatus,
+    TResult Function(_UpdateStatusUjian value)? updateStatusUjian,
+    required TResult orElse(),
+  }) {
+    if (checkStatus != null) {
+      return checkStatus(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CheckStatus implements UjianEvent {
+  const factory _CheckStatus(final String id) = _$CheckStatusImpl;
+
+  String get id;
+  @JsonKey(ignore: true)
+  _$$CheckStatusImplCopyWith<_$CheckStatusImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UpdateStatusUjianImplCopyWith<$Res> {
+  factory _$$UpdateStatusUjianImplCopyWith(_$UpdateStatusUjianImpl value,
+          $Res Function(_$UpdateStatusUjianImpl) then) =
+      __$$UpdateStatusUjianImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String id, String status});
+}
+
+/// @nodoc
+class __$$UpdateStatusUjianImplCopyWithImpl<$Res>
+    extends _$UjianEventCopyWithImpl<$Res, _$UpdateStatusUjianImpl>
+    implements _$$UpdateStatusUjianImplCopyWith<$Res> {
+  __$$UpdateStatusUjianImplCopyWithImpl(_$UpdateStatusUjianImpl _value,
+      $Res Function(_$UpdateStatusUjianImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? status = null,
+  }) {
+    return _then(_$UpdateStatusUjianImpl(
+      null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UpdateStatusUjianImpl implements _UpdateStatusUjian {
+  const _$UpdateStatusUjianImpl(this.id, this.status);
+
+  @override
+  final String id;
+  @override
+  final String status;
+
+  @override
+  String toString() {
+    return 'UjianEvent.updateStatusUjian(id: $id, status: $status)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateStatusUjianImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.status, status) || other.status == status));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id, status);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateStatusUjianImplCopyWith<_$UpdateStatusUjianImpl> get copyWith =>
+      __$$UpdateStatusUjianImplCopyWithImpl<_$UpdateStatusUjianImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function() getAllUjian,
+    required TResult Function(String id) checkStatus,
+    required TResult Function(String id, String status) updateStatusUjian,
+  }) {
+    return updateStatusUjian(id, status);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function()? getAllUjian,
+    TResult? Function(String id)? checkStatus,
+    TResult? Function(String id, String status)? updateStatusUjian,
+  }) {
+    return updateStatusUjian?.call(id, status);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function()? getAllUjian,
+    TResult Function(String id)? checkStatus,
+    TResult Function(String id, String status)? updateStatusUjian,
+    required TResult orElse(),
+  }) {
+    if (updateStatusUjian != null) {
+      return updateStatusUjian(id, status);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_GetAllUjian value) getAllUjian,
+    required TResult Function(_CheckStatus value) checkStatus,
+    required TResult Function(_UpdateStatusUjian value) updateStatusUjian,
+  }) {
+    return updateStatusUjian(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_GetAllUjian value)? getAllUjian,
+    TResult? Function(_CheckStatus value)? checkStatus,
+    TResult? Function(_UpdateStatusUjian value)? updateStatusUjian,
+  }) {
+    return updateStatusUjian?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_GetAllUjian value)? getAllUjian,
+    TResult Function(_CheckStatus value)? checkStatus,
+    TResult Function(_UpdateStatusUjian value)? updateStatusUjian,
+    required TResult orElse(),
+  }) {
+    if (updateStatusUjian != null) {
+      return updateStatusUjian(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _UpdateStatusUjian implements UjianEvent {
+  const factory _UpdateStatusUjian(final String id, final String status) =
+      _$UpdateStatusUjianImpl;
+
+  String get id;
+  String get status;
+  @JsonKey(ignore: true)
+  _$$UpdateStatusUjianImplCopyWith<_$UpdateStatusUjianImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$UjianState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -286,6 +623,7 @@ mixin _$UjianState {
     required TResult Function() loading,
     required TResult Function(UjianResponseModel ujian) success,
     required TResult Function(String message) error,
+    required TResult Function(String status) statusLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -294,6 +632,7 @@ mixin _$UjianState {
     TResult? Function()? loading,
     TResult? Function(UjianResponseModel ujian)? success,
     TResult? Function(String message)? error,
+    TResult? Function(String status)? statusLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -302,6 +641,7 @@ mixin _$UjianState {
     TResult Function()? loading,
     TResult Function(UjianResponseModel ujian)? success,
     TResult Function(String message)? error,
+    TResult Function(String status)? statusLoaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -311,6 +651,7 @@ mixin _$UjianState {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_StatusLoaded value) statusLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -319,6 +660,7 @@ mixin _$UjianState {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_StatusLoaded value)? statusLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -327,6 +669,7 @@ mixin _$UjianState {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_StatusLoaded value)? statusLoaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -392,6 +735,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() loading,
     required TResult Function(UjianResponseModel ujian) success,
     required TResult Function(String message) error,
+    required TResult Function(String status) statusLoaded,
   }) {
     return initial();
   }
@@ -403,6 +747,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? loading,
     TResult? Function(UjianResponseModel ujian)? success,
     TResult? Function(String message)? error,
+    TResult? Function(String status)? statusLoaded,
   }) {
     return initial?.call();
   }
@@ -414,6 +759,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? loading,
     TResult Function(UjianResponseModel ujian)? success,
     TResult Function(String message)? error,
+    TResult Function(String status)? statusLoaded,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -429,6 +775,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_StatusLoaded value) statusLoaded,
   }) {
     return initial(this);
   }
@@ -440,6 +787,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_StatusLoaded value)? statusLoaded,
   }) {
     return initial?.call(this);
   }
@@ -451,6 +799,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_StatusLoaded value)? statusLoaded,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -506,6 +855,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() loading,
     required TResult Function(UjianResponseModel ujian) success,
     required TResult Function(String message) error,
+    required TResult Function(String status) statusLoaded,
   }) {
     return loading();
   }
@@ -517,6 +867,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? loading,
     TResult? Function(UjianResponseModel ujian)? success,
     TResult? Function(String message)? error,
+    TResult? Function(String status)? statusLoaded,
   }) {
     return loading?.call();
   }
@@ -528,6 +879,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? loading,
     TResult Function(UjianResponseModel ujian)? success,
     TResult Function(String message)? error,
+    TResult Function(String status)? statusLoaded,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -543,6 +895,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_StatusLoaded value) statusLoaded,
   }) {
     return loading(this);
   }
@@ -554,6 +907,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_StatusLoaded value)? statusLoaded,
   }) {
     return loading?.call(this);
   }
@@ -565,6 +919,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_StatusLoaded value)? statusLoaded,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -646,6 +1001,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function() loading,
     required TResult Function(UjianResponseModel ujian) success,
     required TResult Function(String message) error,
+    required TResult Function(String status) statusLoaded,
   }) {
     return success(ujian);
   }
@@ -657,6 +1013,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? loading,
     TResult? Function(UjianResponseModel ujian)? success,
     TResult? Function(String message)? error,
+    TResult? Function(String status)? statusLoaded,
   }) {
     return success?.call(ujian);
   }
@@ -668,6 +1025,7 @@ class _$SuccessImpl implements _Success {
     TResult Function()? loading,
     TResult Function(UjianResponseModel ujian)? success,
     TResult Function(String message)? error,
+    TResult Function(String status)? statusLoaded,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -683,6 +1041,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_StatusLoaded value) statusLoaded,
   }) {
     return success(this);
   }
@@ -694,6 +1053,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_StatusLoaded value)? statusLoaded,
   }) {
     return success?.call(this);
   }
@@ -705,6 +1065,7 @@ class _$SuccessImpl implements _Success {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_StatusLoaded value)? statusLoaded,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -791,6 +1152,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function() loading,
     required TResult Function(UjianResponseModel ujian) success,
     required TResult Function(String message) error,
+    required TResult Function(String status) statusLoaded,
   }) {
     return error(message);
   }
@@ -802,6 +1164,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? loading,
     TResult? Function(UjianResponseModel ujian)? success,
     TResult? Function(String message)? error,
+    TResult? Function(String status)? statusLoaded,
   }) {
     return error?.call(message);
   }
@@ -813,6 +1176,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? loading,
     TResult Function(UjianResponseModel ujian)? success,
     TResult Function(String message)? error,
+    TResult Function(String status)? statusLoaded,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -828,6 +1192,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
+    required TResult Function(_StatusLoaded value) statusLoaded,
   }) {
     return error(this);
   }
@@ -839,6 +1204,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
+    TResult? Function(_StatusLoaded value)? statusLoaded,
   }) {
     return error?.call(this);
   }
@@ -850,6 +1216,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
+    TResult Function(_StatusLoaded value)? statusLoaded,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -865,5 +1232,156 @@ abstract class _Error implements UjianState {
   String get message;
   @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$StatusLoadedImplCopyWith<$Res> {
+  factory _$$StatusLoadedImplCopyWith(
+          _$StatusLoadedImpl value, $Res Function(_$StatusLoadedImpl) then) =
+      __$$StatusLoadedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String status});
+}
+
+/// @nodoc
+class __$$StatusLoadedImplCopyWithImpl<$Res>
+    extends _$UjianStateCopyWithImpl<$Res, _$StatusLoadedImpl>
+    implements _$$StatusLoadedImplCopyWith<$Res> {
+  __$$StatusLoadedImplCopyWithImpl(
+      _$StatusLoadedImpl _value, $Res Function(_$StatusLoadedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? status = null,
+  }) {
+    return _then(_$StatusLoadedImpl(
+      null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$StatusLoadedImpl implements _StatusLoaded {
+  const _$StatusLoadedImpl(this.status);
+
+  @override
+  final String status;
+
+  @override
+  String toString() {
+    return 'UjianState.statusLoaded(status: $status)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$StatusLoadedImpl &&
+            (identical(other.status, status) || other.status == status));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, status);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$StatusLoadedImplCopyWith<_$StatusLoadedImpl> get copyWith =>
+      __$$StatusLoadedImplCopyWithImpl<_$StatusLoadedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(UjianResponseModel ujian) success,
+    required TResult Function(String message) error,
+    required TResult Function(String status) statusLoaded,
+  }) {
+    return statusLoaded(status);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(UjianResponseModel ujian)? success,
+    TResult? Function(String message)? error,
+    TResult? Function(String status)? statusLoaded,
+  }) {
+    return statusLoaded?.call(status);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(UjianResponseModel ujian)? success,
+    TResult Function(String message)? error,
+    TResult Function(String status)? statusLoaded,
+    required TResult orElse(),
+  }) {
+    if (statusLoaded != null) {
+      return statusLoaded(status);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
+    required TResult Function(_StatusLoaded value) statusLoaded,
+  }) {
+    return statusLoaded(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_StatusLoaded value)? statusLoaded,
+  }) {
+    return statusLoaded?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
+    TResult Function(_StatusLoaded value)? statusLoaded,
+    required TResult orElse(),
+  }) {
+    if (statusLoaded != null) {
+      return statusLoaded(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _StatusLoaded implements UjianState {
+  const factory _StatusLoaded(final String status) = _$StatusLoadedImpl;
+
+  String get status;
+  @JsonKey(ignore: true)
+  _$$StatusLoadedImplCopyWith<_$StatusLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+
 import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
 
 import '../constants/colors.dart';
@@ -11,6 +12,7 @@ class CustomScaffold extends StatelessWidget {
   final Widget? body;
   final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
+  final bool allowBackNavigation; 
   final bool showBackButton;
   final double toolbarHeight;
 
@@ -21,6 +23,7 @@ class CustomScaffold extends StatelessWidget {
     this.body,
     this.floatingActionButton,
     this.bottomNavigationBar,
+    this.allowBackNavigation=true,
     this.showBackButton = true,
     this.toolbarHeight = 60.0,
   });

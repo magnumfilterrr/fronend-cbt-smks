@@ -23,7 +23,7 @@ class _UjianPageState extends State<UjianPage> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBarTitle: const Text('Materi TPA'),
+      appBarTitle: const Text('Halaman Ujian'),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 24.0),
         children: [

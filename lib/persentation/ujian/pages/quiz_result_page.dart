@@ -8,16 +8,16 @@ import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_result_last.da
 
 class QuizResultPage extends StatefulWidget {
    final String id;
-  final int nilai;
-  final int jawabanBenar;
-  final int totalSoal;
+  final double nilai;
+  final double jawabanBenar;
+  final double totalSoal;
   const QuizResultPage({
-    Key? key,
+    super.key,
     required this.id,
     required this.nilai,
     required this.jawabanBenar,
     required this.totalSoal,
-  }) : super(key: key);
+  });
 
   @override
   State<QuizResultPage> createState() => _QuizResultPageState();
@@ -44,21 +44,6 @@ class _QuizResultPageState extends State<QuizResultPage> {
             ),
           ),
           const SizedBox(height: 40.0),
-          const Padding(
-            padding: paddingHorizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Tes yang Tersedia',
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
           // const SizedBox(height: 8.0),
           // SingleChildScrollView(
           //   padding: const EdgeInsets.symmetric(
@@ -73,7 +58,7 @@ class _QuizResultPageState extends State<QuizResultPage> {
           //         .toList(),
           //   ),
           // ),
-          SizedBox(height: 30.0),
+          const SizedBox(height: 30.0),
         ],
       ),
       bottomNavigationBar: Container(

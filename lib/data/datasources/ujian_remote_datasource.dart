@@ -32,4 +32,52 @@ class UjianRemoteDataSource {
       return const Left('Gagal');
     }
   }
+
+  // Future<Either<String, bool>> updateStatusUjian(
+  //     String ujianId, String status) async {
+  //   final authData = await AuthLocalDataSources().getAuthData();
+
+  //   print(
+  //       "Mengirim request update status ke ${Variables.baseUrl}/api/siswa/ujian/$ujianId/status");
+  //   print("Dengan data: { status: $status }");
+
+  //   final response = await http.put(
+  //     Uri.parse('${Variables.baseUrl}/api/siswa/ujian/$ujianId/status'),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer ${authData.accessToken}',
+  //     },
+  //     body: jsonEncode({'status': status}),
+  //   );
+
+  //   print("Response status: ${response.statusCode}");
+  //   print("Response body: ${response.body}");
+
+  //   if (response.statusCode == 200) {
+  //     return const Right(true);
+  //   } else {
+  //     return const Left('Gagal memperbarui status ujian');
+  //   }
+  // }
+
+  // Future<Either<String, String>> getStatusUjian(String ujianId) async {
+  //   final authData = await AuthLocalDataSources().getAuthData();
+  //   try {
+  //     final response = await http.get(
+  //       Uri.parse('${Variables.baseUrl}/ujian/status/$ujianId'),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Bearer ${authData.accessToken}',
+  //       },
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       return const Right('Berhasil mendapatkan status ujian');
+  //     } else {
+  //       return const Left("Gagal mendapatkan status ujian");
+  //     }
+  //   } catch (e) {
+  //     return Left(e.toString());
+  //   }
+  // }
 }

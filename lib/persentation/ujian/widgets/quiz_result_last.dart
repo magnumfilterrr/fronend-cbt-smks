@@ -6,9 +6,9 @@ import '../../../core/constants/colors.dart';
 
 class QuizResultLast extends StatefulWidget {
   final String id;
-  final int nilai;
-  final int jawabanBenar;
-  final int totalSoal;
+  final double nilai;
+  final double jawabanBenar;
+  final double totalSoal;
   const QuizResultLast({
     super.key,
     required this.nilai,
@@ -85,8 +85,8 @@ class _QuizResultLastState extends State<QuizResultLast> {
                 child: Column(
                   children: [
                     CircularStepProgressIndicator(
-                      totalSteps: totalQuestion,
-                      currentStep: correct,
+                      totalSteps: totalQuestion.toInt(),
+                      currentStep: correct.toInt(),
                       stepSize: 10,
                       selectedColor: AppColors.green,
                       unselectedColor: AppColors.primary,
