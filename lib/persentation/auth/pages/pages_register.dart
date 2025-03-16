@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ujian_online_smks/core/components/buttons.dart';
 import 'package:ujian_online_smks/core/components/custom_text_field.dart';
 import 'package:ujian_online_smks/core/constants/colors.dart';
+import 'package:ujian_online_smks/core/constants/variables.dart';
 import 'package:ujian_online_smks/data/datasources/auth_local_datasourece.dart';
 import 'package:ujian_online_smks/data/models/request/register_request_model.dart';
 import 'package:ujian_online_smks/persentation/auth/bloc/register/register_bloc.dart';
 import 'package:ujian_online_smks/persentation/auth/pages/pages_login.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -21,6 +25,37 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final roleController = TextEditingController();
+
+  String? selectedKelas;
+  String selectedJurusan = 'DKV';
+  List<Map<String, dynamic>> kelasList = [];
+  final List<String> jurusanList = ['DKV', 'TKR', 'MPLB', 'PBR'];
+  int selectedKelasId = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchKelas().then((data) {
+      setState(() {
+        kelasList = data;
+      });
+    }).catchError((error) {
+      print("Error fetching kelas: $error");
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> fetchKelas() async {
+    final response =
+        await http.get(Uri.parse('${Variables.baseUrl}/api/getkelas'));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      return List<Map<String, dynamic>>.from(jsonResponse['kelas']);
+    } else {
+      throw Exception('Gagal mengambil daftar kelas');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +87,40 @@ class _RegisterPageState extends State<RegisterPage> {
             controller: roleController,
             label: 'Role',
           ),
+          const SizedBox(height: 16.0),
+          CustomTextField<int>(
+            label: 'Pilih Kelas',
+            isDropdown: true,
+            value: selectedKelasId, // Nilai yang dipilih (int)
+            items: kelasList.map((kelas) {
+              return DropdownMenuItem<int>(
+                value: kelas['id'], // Pastikan ini `int`
+                child: Text(kelas['nama_kelas']),
+              );
+            }).toList(),
+            onDropdownChanged: (value) {
+              setState(() {
+                selectedKelasId = value ?? 1;
+              });
+            },
+          ),
+          const SizedBox(height: 16.0),
+          CustomTextField<String>(
+            label: 'Pilih Jurusan',
+            isDropdown: true,
+            value: selectedJurusan,
+            items: ['DKV', 'TKR', 'MPLB', 'PBR'].map((jurusan) {
+              return DropdownMenuItem(
+                value: jurusan,
+                child: Text(jurusan),
+              );
+            }).toList(),
+            onDropdownChanged: (value) {
+              setState(() {
+                selectedJurusan = value ?? 'DKV';
+              });
+            },
+          ),
           const SizedBox(height: 24.0),
           BlocConsumer<RegisterBloc, RegisterState>(
             listener: (context, state) {
@@ -66,20 +135,23 @@ class _RegisterPageState extends State<RegisterPage> {
                   backgroundColor: Colors.blue,
                 ),
               );
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const DashboardPage()),
-              // );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPages()),
+              );
             },
             builder: (context, state) {
               return state.maybeWhen(orElse: () {
                 return Button.filled(
                   onPressed: () {
                     final dataRequest = RegisterRequestModel(
-                        name: nameController.text,
-                        email: emailController.text,
-                        password: passwordController.text,
-                        role: roleController.text);
+                      name: nameController.text,
+                      email: emailController.text,
+                      password: passwordController.text,
+                      role: roleController.text,
+                      kelasId: selectedKelasId,
+                      jurusan: selectedJurusan,
+                    );
 
                     context
                         .read<RegisterBloc>()

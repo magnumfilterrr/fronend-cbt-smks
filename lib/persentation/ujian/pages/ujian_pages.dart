@@ -19,6 +19,7 @@ class _UjianPageState extends State<UjianPage> {
     context.read<UjianBloc>().add(const UjianEvent.getAllUjian());
     super.initState();
   }
+  
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 class SoalResponseModel {
   final String status;
   final String message;

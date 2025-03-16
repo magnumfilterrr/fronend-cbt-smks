@@ -19,15 +19,11 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    // const Center(
-    //   child: Text('Home'),
-    // ),
-    // const MateriPage(),
     const Center(
-      child: Text('Materi'),
+      child: Text('Coming Soon'),
     ),
     const Center(
-      child: Text('No Notification'),
+      child: Text('Coming Soon'),
     ),
     const ProfilePage(),
   ];
@@ -64,7 +60,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             NavMenu(
               iconPath: Assets.icons.bell.path,
-              label: 'Notification',
+              label: 'Notif',
               isActive: _selectedIndex == 2,
               onPressed: () => _onItemTapped(2),
             ),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:ujian_online_smks/core/components/buttons.dart';
 import 'package:ujian_online_smks/core/constants/colors.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/daftar_soal/daftar_soal_bloc.dart';
-// import 'package:ujian_online_smks/persentation/ujian/bloc/hitung_nilai/hitung_nilai_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/jawaban/jawaban_bloc.dart';
-// import 'package:ujian_online_smks/persentation/ujian/bloc/ujian/ujian_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/pages/quiz_result_page.dart';
 import 'package:ujian_online_smks/persentation/ujian/widgets/answer_choices.dart';
 // import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_result_last.dart';
@@ -13,10 +12,14 @@ import 'package:ujian_online_smks/persentation/ujian/widgets/answer_choices.dart
 
 class QuizMultipleChoice extends StatefulWidget {
   final String id;
+  final bool isTimeUp;
+  final int remainingSeconds;
   const QuizMultipleChoice({
-    super.key,
+    Key? key,
     required this.id,
-  });
+    required this.isTimeUp,
+    required this.remainingSeconds,
+  }) : super(key: key);
 
   @override
   State<QuizMultipleChoice> createState() => _QuizMultipleChoiceState();
@@ -43,10 +46,11 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
               answered: (data) {
                 print("Jawaban diterima: $data");
                 if (data != null && data.containsKey('data')) {
-                  final nilai = data['data']['nilai'] ?? 0;
-                  final jawabanBenar = data['data']['jawaban_benar'] ?? 0;
-                  final totalSoal = data['data']['total_soal'] ?? 0;
-
+                  final double nilai = (data['data']['nilai'] ?? 0).toDouble();
+                  final double jawabanBenar =
+                      (data['data']['jawaban_benar'] ?? 0).toDouble();
+                  final double totalSoal =
+                      (data['data']['total_soal'] ?? 0).toDouble();
                   // Navigasi langsung ke halaman hasil
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -55,6 +59,7 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                         nilai: nilai,
                         jawabanBenar: jawabanBenar,
                         totalSoal: totalSoal,
+                        remainingSeconds: widget.remainingSeconds,
                       ),
                     ),
                   );
@@ -69,49 +74,6 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
             );
           },
         ),
-        // BlocListener<HitungNilaiBloc, HitungNilaiState>(
-        //   listener: (context, state) {
-        //     state.maybeWhen(
-        //       success: (nilai, jawabanBenar, totalSoal) {
-        //         // Navigasi ke halaman hasil
-        //         Navigator.of(context).pushReplacement(
-        //           MaterialPageRoute(
-        //             builder: (context) => QuizResultLast(
-        //               id: widget.id,
-        //               nilai: nilai,
-        //               jawabanBenar: jawabanBenar,
-        //               totalSoal: totalSoal,
-        //             ),
-        //           ),
-        //         );
-        //       },
-        //       error: (message) {
-        //         ScaffoldMessenger.of(context).showSnackBar(
-        //           SnackBar(content: Text('Error nilai: $message')),
-        //         );
-        //       },
-        //       orElse: () {},
-        //     );
-        //   },
-        // ),
-
-        // BlocListener<UjianBloc, UjianState>(
-        //   listener: (context, state) {
-        //     state.maybeWhen(
-        //       statusLoaded: (status) {
-        //         ScaffoldMessenger.of(context).showSnackBar(
-        //           SnackBar(content: Text('Status ujian diperbarui: $status')),
-        //         );
-        //       },
-        //       error: (message) {
-        //         ScaffoldMessenger.of(context).showSnackBar(
-        //           SnackBar(content: Text('Error status ujian: $message')),
-        //         );
-        //       },
-        //       orElse: () {},
-        //     );
-        //   },
-        // ),
       ],
       child: BlocBuilder<DaftarSoalBloc, DaftarSoalState>(
         builder: (context, state) {
@@ -211,9 +173,11 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                     },
                     label: 'Sebelumnya',
                   ),
-
-                if (isPrev) const SizedBox(width: 16.0), // Jarak antar tombol
-
+                // const SizedBox(height: 20),
+                if (isPrev)
+                  const SizedBox(
+                    height: 20,
+                  ), // Jarak antar tombol
                 if (jawaban.isEmpty)
                   Button.filled(
                     onPressed: () {},

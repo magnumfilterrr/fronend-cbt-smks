@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ujian_online_smks/core/assets/assets.gen.dart';
 import 'package:ujian_online_smks/core/components/custom_scaffold.dart';
@@ -24,11 +25,18 @@ class QuizStartPage extends StatefulWidget {
 class _QuizStartPageState extends State<QuizStartPage> {
   Timer? _timer;
   int remainingSeconds = 0;
+  bool isTimeUp = false;
 
   @override
   void initState() {
     super.initState();
+    lockScreenMode();
+
     context.read<UjianBloc>().add(const UjianEvent.getAllUjian());
+  }
+
+  void lockScreenMode() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
 
   void startTimer(int durationInMinutes) {
@@ -40,7 +48,12 @@ class _QuizStartPageState extends State<QuizStartPage> {
         }
       } else {
         _timer?.cancel();
-        if (mounted) showTimeUpDialog();
+        if (mounted) {
+          setState(() {
+            isTimeUp = true; // Set waktu habis
+          });
+        }
+        showTimeUpDialog();
       }
     });
   }
@@ -84,11 +97,13 @@ class _QuizStartPageState extends State<QuizStartPage> {
   }
 
   void _navigateToResult(double nilai, int jawabanBenar, int totalSoal) {
+    final remainingTime = remainingSeconds;
     context.pushReplacement(QuizResultLast(
       id: widget.data.id.toString(),
       nilai: nilai,
       jawabanBenar: jawabanBenar.toDouble(),
       totalSoal: totalSoal.toDouble(),
+      remainingSeconds: remainingTime,
     ));
   }
 
@@ -126,6 +141,7 @@ class _QuizStartPageState extends State<QuizStartPage> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      automaticallyImplyLeading: false,
       showBackButton: false,
       appBarTitle: Text(widget.data.judulUjian),
       actions: [
@@ -154,34 +170,40 @@ class _QuizStartPageState extends State<QuizStartPage> {
         ),
         const SizedBox(width: 24.0),
       ],
-      body: ListView(
-        padding: const EdgeInsets.all(30.0),
-        children: [
-          const Text('Pertanyaan', style: TextStyle(fontSize: 18)),
-          BlocBuilder<DaftarSoalBloc, DaftarSoalState>(
-            builder: (context, state) {
-              return state.maybeMap(
-                orElse: () => const SizedBox(),
-                success: (e) => Row(
-                  children: [
-                    Flexible(
-                      child: LinearProgressIndicator(
-                        value: (e.index + 1) / e.data.length,
-                        color: AppColors.primary,
-                      ),
+      body: WillPopScope(
+          onWillPop: () async => false,
+          child: ListView(
+            padding: const EdgeInsets.all(30.0),
+            children: [
+              const Text('Pertanyaan', style: TextStyle(fontSize: 18)),
+              BlocBuilder<DaftarSoalBloc, DaftarSoalState>(
+                builder: (context, state) {
+                  return state.maybeMap(
+                    orElse: () => const SizedBox(),
+                    success: (e) => Row(
+                      children: [
+                        Flexible(
+                          child: LinearProgressIndicator(
+                            value: (e.index + 1) / e.data.length,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        const SizedBox(width: 16.0),
+                        Text('${e.index + 1}/${e.data.length}',
+                            style: const TextStyle(fontSize: 16)),
+                      ],
                     ),
-                    const SizedBox(width: 16.0),
-                    Text('${e.index + 1}/${e.data.length}',
-                        style: const TextStyle(fontSize: 16)),
-                  ],
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 16.0),
-          QuizMultipleChoice(id: widget.data.id.toString()),
-        ],
-      ),
+                  );
+                },
+              ),
+              const SizedBox(height: 16.0),
+              QuizMultipleChoice(
+                id: widget.data.id.toString(),
+                isTimeUp: isTimeUp,
+                remainingSeconds: remainingSeconds,
+              ),
+            ],
+          )),
     );
   }
 }

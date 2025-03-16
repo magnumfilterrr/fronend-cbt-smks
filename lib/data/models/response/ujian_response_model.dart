@@ -33,7 +33,6 @@ class UjianResponseModel {
 class Ujian {
   final int id;
   final int mataPelajaranId;
-  final int kelasId;
   final String judulUjian;
   final DateTime tanggalUjian;
   final int durasiUjian;
@@ -44,7 +43,6 @@ class Ujian {
   Ujian({
     required this.id,
     required this.mataPelajaranId,
-    required this.kelasId,
     required this.judulUjian,
     required this.tanggalUjian,
     required this.durasiUjian,
@@ -60,7 +58,6 @@ class Ujian {
   factory Ujian.fromJson(Map<String, dynamic> json) => Ujian(
         id: json["id"],
         mataPelajaranId: json["mata_pelajaran_id"],
-        kelasId: json["kelas_id"],
         judulUjian: json["judul_ujian"],
         tanggalUjian: DateTime.parse(
             json["tanggal_ujian"].replaceAll(" ", "T") +
@@ -74,7 +71,6 @@ class Ujian {
   Map<String, dynamic> toJson() => {
         "id": id,
         "mata_pelajaran_id": mataPelajaranId,
-        "kelas_id": kelasId,
         "judul_ujian": judulUjian,
         "tanggal_ujian": tanggalUjian.toIso8601String(),
         "durasi_ujian": durasiUjian,

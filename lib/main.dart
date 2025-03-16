@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+// import 'package:kiosk_mode/kiosk_mode.dart';
 import 'package:ujian_online_smks/data/datasources/soal_remote_datasourece.dart';
 import 'package:ujian_online_smks/data/datasources/ujian_remote_datasource.dart';
 import 'package:ujian_online_smks/persentation/auth/bloc/login/login_bloc.dart';
@@ -12,7 +14,10 @@ import 'package:ujian_online_smks/persentation/ujian/bloc/jawaban/jawaban_bloc.d
 import 'package:ujian_online_smks/persentation/ujian/bloc/soal/soal_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/ujian/ujian_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // await startKioskMode();
+  await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   runApp(const MyApp());
 }
 

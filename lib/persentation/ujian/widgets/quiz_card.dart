@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:kiosk_mode/kiosk_mode.dart';
 import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
 // import 'package:ujian_online_smks/data/datasources/ujian_remote_datasource.dart';
 import 'package:ujian_online_smks/data/models/response/ujian_response_model.dart';
@@ -11,6 +13,7 @@ import '../../../core/constants/colors.dart';
 
 class QuizCard extends StatefulWidget {
   final Ujian data;
+
   const QuizCard({super.key, required this.data});
 
   @override
@@ -59,7 +62,7 @@ class _QuizCardState extends State<QuizCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         if (widget.data.status == 'selesai') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -76,6 +79,8 @@ class _QuizCardState extends State<QuizCard> {
             ),
           );
         } else if (widget.data.status == 'sedang berlangsung') {
+          SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+          await startKioskMode();
           // Hanya bisa mengakses ujian jika status "sedang berlangsung"
           context.push(QuizStartPage(data: widget.data));
         }

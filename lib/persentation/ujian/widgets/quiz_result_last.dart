@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+
 import 'package:ujian_online_smks/persentation/ujian/widgets/result_value.dart';
 
 import '../../../core/constants/colors.dart';
@@ -9,13 +10,18 @@ class QuizResultLast extends StatefulWidget {
   final double nilai;
   final double jawabanBenar;
   final double totalSoal;
+    final int remainingSeconds;
+
+
+  // ignore: use_super_parameters
   const QuizResultLast({
-    super.key,
+    Key? key,
+    required this.id,
     required this.nilai,
     required this.jawabanBenar,
     required this.totalSoal,
-    required this.id,
-  });
+    required this.remainingSeconds,
+  }) : super(key: key);
 
   @override
   State<QuizResultLast> createState() => _QuizResultLastState();
@@ -34,7 +40,7 @@ class _QuizResultLastState extends State<QuizResultLast> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Hasil Tes Terakhir',
+          'Hasil Ujian Terakhir',
           style: TextStyle(
             fontSize: 21,
             fontWeight: FontWeight.w500,
@@ -65,7 +71,7 @@ class _QuizResultLastState extends State<QuizResultLast> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Semua Tes',
+                      'Semua Ujian',
                       style: TextStyle(
                         fontSize: 21,
                         fontWeight: FontWeight.w500,

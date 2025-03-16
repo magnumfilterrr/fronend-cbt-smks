@@ -19,6 +19,7 @@ class UjianRemoteDataSource {
 
     print('Response Status: ${response.statusCode}');
     print('Response Body: ${response.body}');
+    print(jsonDecode(response.body));
 
     if (response.statusCode == 200) {
       try {

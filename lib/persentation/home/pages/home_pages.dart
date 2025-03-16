@@ -55,14 +55,14 @@ class _HomePageState extends State<HomePage> {
               ),
               MenuHome(
                 imagePath: Assets.images.menu.materi.path,
-                label: 'Materi',
+                label: 'Ujian',
                 onPressed: () {
                   context.push(const UjianPage());
                 },
               ),
               MenuHome(
                 imagePath: Assets.images.menu.quiz.path,
-                label: 'Quiz',
+                label: 'Materi',
                 onPressed: () async {
                   // await startKioskMode();
                   // context.push(const QuizListPage());
