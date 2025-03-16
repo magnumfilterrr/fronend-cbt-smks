@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:ujian_online_smks/core/components/buttons.dart';
 import 'package:ujian_online_smks/core/constants/colors.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/daftar_soal/daftar_soal_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/jawaban/jawaban_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/pages/quiz_result_page.dart';
 import 'package:ujian_online_smks/persentation/ujian/widgets/answer_choices.dart';
-// import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_result_last.dart';
-// import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_result_last.dart'; // Pastikan path ini benar
 
 class QuizMultipleChoice extends StatefulWidget {
   final String id;
   final bool isTimeUp;
   final int remainingSeconds;
   const QuizMultipleChoice({
-    Key? key,
+    super.key,
     required this.id,
     required this.isTimeUp,
     required this.remainingSeconds,
-  }) : super(key: key);
+  });
 
   @override
   State<QuizMultipleChoice> createState() => _QuizMultipleChoiceState();
@@ -101,13 +98,23 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                       )
                     ],
                   ),
-                  child: Text(
-                    e[index].pertanyaan,
-                    textAlign: TextAlign.justify,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  child: Column(
+                    children: [
+                      Text(
+                        e[index].pertanyaan,
+                        textAlign: TextAlign.justify,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      if (e[index].gambarPertanyaan.isNotEmpty)
+                        Image.network(
+                          e[index].gambarPertanyaan,
+                          fit: BoxFit.cover,
+                        ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 34.0),
@@ -115,8 +122,11 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AnswerChoices(
-                      label: e[index].pilihanJawaban.a,
-                      isSelected: selectedAnswer == e[index].pilihanJawaban.a,
+                      label: e[index].pilihanJawaban.a.teks,
+                      imageUrl:
+                          e[index].pilihanJawaban.a.gambar, // Tambahkan ini
+                      isSelected:
+                          selectedAnswer == e[index].pilihanJawaban.a.teks,
                       onChanged: (value) {
                         setState(() {
                           selectedAnswer = value;
@@ -126,8 +136,11 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                     ),
                     const SizedBox(height: 16.0),
                     AnswerChoices(
-                      label: e[index].pilihanJawaban.b,
-                      isSelected: selectedAnswer == e[index].pilihanJawaban.b,
+                      label: e[index].pilihanJawaban.b.teks,
+                      imageUrl:
+                          e[index].pilihanJawaban.b.gambar, // Tambahkan ini
+                      isSelected:
+                          selectedAnswer == e[index].pilihanJawaban.b.teks,
                       onChanged: (value) {
                         setState(() {
                           selectedAnswer = value;
@@ -137,8 +150,11 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                     ),
                     const SizedBox(height: 16.0),
                     AnswerChoices(
-                      label: e[index].pilihanJawaban.c,
-                      isSelected: selectedAnswer == e[index].pilihanJawaban.c,
+                      label: e[index].pilihanJawaban.c.teks,
+                      imageUrl:
+                          e[index].pilihanJawaban.c.gambar, // Tambahkan ini
+                      isSelected:
+                          selectedAnswer == e[index].pilihanJawaban.c.teks,
                       onChanged: (value) {
                         setState(() {
                           selectedAnswer = value;
@@ -148,8 +164,11 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                     ),
                     const SizedBox(height: 16.0),
                     AnswerChoices(
-                      label: e[index].pilihanJawaban.d,
-                      isSelected: selectedAnswer == e[index].pilihanJawaban.d,
+                      label: e[index].pilihanJawaban.d.teks,
+                      imageUrl:
+                          e[index].pilihanJawaban.d.gambar, // Tambahkan ini
+                      isSelected:
+                          selectedAnswer == e[index].pilihanJawaban.d.teks,
                       onChanged: (value) {
                         setState(() {
                           selectedAnswer = value;

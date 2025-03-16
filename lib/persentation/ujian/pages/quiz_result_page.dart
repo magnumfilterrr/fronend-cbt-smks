@@ -17,13 +17,13 @@ class QuizResultPage extends StatefulWidget {
   final int remainingSeconds;
 
   const QuizResultPage({
-    Key? key,
+    super.key,
     required this.id,
     required this.nilai,
     required this.jawabanBenar,
     required this.totalSoal,
     required this.remainingSeconds,
-  }) : super(key: key);
+  });
 
   @override
   State<QuizResultPage> createState() => _QuizResultPageState();
@@ -37,11 +37,11 @@ class _QuizResultPageState extends State<QuizResultPage> {
   @override
   void initState() {
     super.initState();
-    remainingTime = widget.remainingSeconds;
+    remainingTime = widget.remainingSeconds ~/ 60;
     isTimeUp = remainingTime <= 0;
 
     if (remainingTime > 0) {
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
         if (remainingTime > 0) {
           setState(() {
             remainingTime--;
@@ -89,7 +89,7 @@ class _QuizResultPageState extends State<QuizResultPage> {
             ),
             const SizedBox(height: 40.0),
             Text(
-              'Sisa Waktu: $remainingTime detik',
+              'Sisa Waktu: $remainingTime Menit',
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
@@ -105,7 +105,7 @@ class _QuizResultPageState extends State<QuizResultPage> {
             child: Button.filled(
               onPressed: isTimeUp
                   ? () async {
-                      await stopKioskMode();
+                      // await stopKioskMode();
                       context.popToRoot();
                     }
                   : null, // Disabled jika waktu belum habis
