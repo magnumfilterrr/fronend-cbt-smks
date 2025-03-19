@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ujian_online_smks/core/assets/assets.gen.dart';
-import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
+// import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
 import 'package:ujian_online_smks/data/datasources/auth_local_datasourece.dart';
 import 'package:ujian_online_smks/data/models/response/auth_response_model.dart';
 import 'package:ujian_online_smks/persentation/Profile/widgets/profile_menu.dart';
@@ -32,49 +32,59 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16.0),
-          SizedBox(
-            width: context.deviceWidth - 160.0,
+
+          // Gunakan Expanded agar teks tidak menyebabkan overflow
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FutureBuilder<AuthResponseModel>(
-                    future: AuthLocalDataSources().getAuthData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(
-                          snapshot.data!.data.name,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      } else {
-                        return const SizedBox();
-                      }
-                    }),
+                  future: AuthLocalDataSources().getAuthData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        snapshot.data!.data.name,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines:
+                            1, // Batasi menjadi satu baris agar tidak over
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
                 FutureBuilder<AuthResponseModel>(
-                    future: AuthLocalDataSources().getAuthData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(
-                          snapshot.data!.data.email,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      } else {
-                        return const SizedBox();
-                      }
-                    }),
+                  future: AuthLocalDataSources().getAuthData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        snapshot.data!.data.email,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
               ],
             ),
           ),
+
+          // Spacer agar tombol logout tetap di kanan
           const Spacer(),
+
+          // Tombol Logout (jika ingin digunakan)
           // IconButton(
           //   onPressed: () {
           //     context.pushAndRemoveUntil(const LoginPage(), (route) => false);

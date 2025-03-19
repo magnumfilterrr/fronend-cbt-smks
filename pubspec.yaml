@@ -44,7 +44,7 @@ dependencies:
   step_progress_indicator: ^1.0.2
   intl: ^0.18.1
   kiosk_mode: ^0.6.0
-  flutter_windowmanager: ^0.2.0
+  firebase_core: ^2.15.0
 dev_dependencies:
   build_runner: ^2.4.9
   flutter_gen_runner: ^5.8.0

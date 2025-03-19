@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ujian_online_smks/core/assets/assets.gen.dart';
 import 'package:ujian_online_smks/core/components/search_input.dart';
-import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
+// import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
 import 'package:ujian_online_smks/data/datasources/auth_local_datasourece.dart';
 import 'package:ujian_online_smks/data/models/response/auth_response_model.dart';
 
@@ -29,31 +29,34 @@ class _HeaderHomeState extends State<HeaderHome> {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween, // Sebar elemen ke kiri & kanan
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                child: Image.asset(
-                  Assets.icons.notification.path,
-                  width: 50.0,
-                  height: 50.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 16.0),
-              SizedBox(
-                width: context.deviceWidth - 208.0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Halo,',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
+              Row(
+                // Bungkus Avatar + Nama dalam Row supaya tetap di kiri
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                    child: Image.asset(
+                      Assets.icons.notification.path,
+                      width: 50.0,
+                      height: 50.0,
+                      fit: BoxFit.cover,
                     ),
-                    FutureBuilder<AuthResponseModel>(
+                  ),
+                  const SizedBox(width: 16.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Halo,',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      FutureBuilder<AuthResponseModel>(
                         future: AuthLocalDataSources().getAuthData(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
@@ -64,16 +67,20 @@ class _HeaderHomeState extends State<HeaderHome> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             );
                           } else {
                             return const SizedBox();
                           }
-                        }),
-                  ],
-                ),
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              const Spacer(),
+
+              // Letakkan icon di kanan
               IconButton(
                 onPressed: () {},
                 icon: Container(

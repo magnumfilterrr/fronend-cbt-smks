@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:kiosk_mode/kiosk_mode.dart';
-
+import 'package:flutter/foundation.dart';
 import 'package:ujian_online_smks/core/components/buttons.dart';
 import 'package:ujian_online_smks/core/components/custom_scaffold.dart';
 import 'package:ujian_online_smks/core/constants/colors.dart';
@@ -105,8 +106,27 @@ class _QuizResultPageState extends State<QuizResultPage> {
             child: Button.filled(
               onPressed: isTimeUp
                   ? () async {
-                      // await stopKioskMode();
-                      context.popToRoot();
+                      try {
+                        // Hanya jalankan stopKioskMode jika bukan Web dan platform adalah Android
+                        if (!kIsWeb && Platform.isAndroid) {
+                          await stopKioskMode(); // Pastikan fungsi ini sudah didefinisikan
+                        }
+
+                        // Kembali ke halaman beranda
+                        if (mounted) {
+                          context.popToRoot();
+                        }
+                      } catch (e) {
+                        // Tangani error jika terjadi masalah saat menghentikan Kiosk Mode
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Terjadi kesalahan: $e'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      }
                     }
                   : null, // Disabled jika waktu belum habis
               label: 'Kembali ke Beranda',

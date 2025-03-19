@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "496557759827",
+    "project_id": "ujian-smmks",
+    "storage_bucket": "ujian-smmks.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496557759827:android:f766ffe8f9a4c1c69d95a6",
+        "android_client_info": {
+          "package_name": "com.example.ujian_online_smks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANo0zLQAg899E3e9n0mZhktiZwXf-hrVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

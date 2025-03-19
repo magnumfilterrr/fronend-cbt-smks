@@ -1,13 +1,16 @@
 import 'dart:async';
-
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:kiosk_mode/kiosk_mode.dart';
+// import 'package:kiosk_mode/kiosk_mode.dart';
 import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
 // import 'package:ujian_online_smks/data/datasources/ujian_remote_datasource.dart';
 import 'package:ujian_online_smks/data/models/response/ujian_response_model.dart';
 import 'package:ujian_online_smks/persentation/ujian/pages/quiz_start_page.dart';
+// import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/colors.dart';
 
@@ -79,10 +82,29 @@ class _QuizCardState extends State<QuizCard> {
             ),
           );
         } else if (widget.data.status == 'sedang berlangsung') {
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-          await startKioskMode();
-          // Hanya bisa mengakses ujian jika status "sedang berlangsung"
-          context.push(QuizStartPage(data: widget.data));
+          try {
+            // Hanya jalankan Kiosk Mode jika bukan Web dan platform adalah Android
+            if (!kIsWeb && Platform.isAndroid) {
+              await SystemChrome.setEnabledSystemUIMode(
+                  SystemUiMode.immersiveSticky);
+              await startKioskMode(); // Pastikan fungsi ini sudah didefinisikan
+            }
+
+            // Navigasi ke halaman QuizStartPage
+            if (mounted) {
+              context.push(QuizStartPage(data: widget.data));
+            }
+          } catch (e) {
+            // Tangani error jika terjadi masalah saat mengaktifkan Kiosk Mode
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Terjadi kesalahan: $e'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          }
         }
       },
       child: Container(
