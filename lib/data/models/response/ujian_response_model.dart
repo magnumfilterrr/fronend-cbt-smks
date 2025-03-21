@@ -32,23 +32,19 @@ class UjianResponseModel {
 
 class Ujian {
   final int id;
-  final int mataPelajaranId;
   final String judulUjian;
   final DateTime tanggalUjian;
   final int durasiUjian;
-  final DateTime createdAt;
-  final DateTime updatedAt;
   final String status;
+  final bool isCompleted;
 
   Ujian({
     required this.id,
-    required this.mataPelajaranId,
     required this.judulUjian,
     required this.tanggalUjian,
     required this.durasiUjian,
-    required this.createdAt,
-    required this.updatedAt,
     required this.status,
+    required this.isCompleted,
   });
 
   factory Ujian.fromRawJson(String str) => Ujian.fromJson(json.decode(str));
@@ -57,25 +53,19 @@ class Ujian {
 
   factory Ujian.fromJson(Map<String, dynamic> json) => Ujian(
         id: json["id"],
-        mataPelajaranId: json["mata_pelajaran_id"],
         judulUjian: json["judul_ujian"],
-        tanggalUjian: DateTime.parse(
-            json["tanggal_ujian"].replaceAll(" ", "T") +
-                "Z"), // Format ke ISO 8601
+        tanggalUjian: DateTime.parse(json["tanggal_ujian"]),
         durasiUjian: json["durasi_ujian"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
         status: json["status"],
+        isCompleted: json["is_completed"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "mata_pelajaran_id": mataPelajaranId,
         "judul_ujian": judulUjian,
         "tanggal_ujian": tanggalUjian.toIso8601String(),
         "durasi_ujian": durasiUjian,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
         "status": status,
+        "is_completed": isCompleted,
       };
 }

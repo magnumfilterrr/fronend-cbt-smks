@@ -41,18 +41,38 @@ class AnswerChoices extends StatelessWidget {
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  (loadingProgress.expectedTotalBytes ?? 1)
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
                   errorBuilder: (context, error, stackTrace) =>
                       const Icon(Icons.broken_image, size: 100),
                 ),
               ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start, // Agar teks sejajar atas
               children: [
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                Expanded(
+                  // Membantu teks wrap ke bawah
+                  child: Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    softWrap: true, // Pastikan teks bisa wrap ke bawah
                   ),
                 ),
                 Container(

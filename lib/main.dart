@@ -71,7 +71,7 @@ class MobileLayout extends StatelessWidget {
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            maxWidth: 550, // Ukuran maksimal seperti layar mobile
+            maxWidth: 400, // Ukuran maksimal seperti layar mobile
           ),
           child: Container(
             height: double.infinity,

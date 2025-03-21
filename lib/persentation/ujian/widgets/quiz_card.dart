@@ -25,12 +25,14 @@ class QuizCard extends StatefulWidget {
 
 class _QuizCardState extends State<QuizCard> {
   late String status;
+  late bool isCompleted;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    status = widget.data.status; // Ambil status awal dari backend
+    status = widget.data.status;
+    isCompleted = widget.data.isCompleted;
     // _startAutoUpdate();
   }
 
@@ -81,7 +83,7 @@ class _QuizCardState extends State<QuizCard> {
               backgroundColor: Colors.orange,
             ),
           );
-        } else if (widget.data.status == 'sedang berlangsung') {
+        } else if (widget.data.status == 'sedang berlangsung' && !isCompleted) {
           try {
             // Hanya jalankan Kiosk Mode jika bukan Web dan platform adalah Android
             if (!kIsWeb && Platform.isAndroid) {
@@ -105,6 +107,13 @@ class _QuizCardState extends State<QuizCard> {
               );
             }
           }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Anda sudah mengerjakan ujian ini.'),
+              backgroundColor: Colors.blue,
+            ),
+          );
         }
       },
       child: Container(
@@ -166,6 +175,22 @@ class _QuizCardState extends State<QuizCard> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: isCompleted ? Colors.green : Colors.red,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      isCompleted
+                          ? '✅ Sudah Mengerjakan'
+                          : '⏳ Belum Mengerjakan',
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

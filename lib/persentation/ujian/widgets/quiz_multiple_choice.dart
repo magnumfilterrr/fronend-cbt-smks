@@ -113,13 +113,26 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                       // Cek apakah gambarPertanyaan tidak null dan tidak kosong sebelum menampilkan gambar
                       if (e[index].gambarPertanyaan != null &&
                           e[index].gambarPertanyaan!.isNotEmpty)
-                        Image.network(
-                          e[index].gambarPertanyaan!,
-                          fit: BoxFit.cover,
-                        ),
-                    ],
+                        Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.network(
+                                e[index].gambarPertanyaan!,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.broken_image, size: 100),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
-                ),
                 const SizedBox(height: 34.0),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +142,7 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                       imageUrl: (e[index].pilihanJawaban.a.gambar != null &&
                               e[index].pilihanJawaban.a.gambar!.isNotEmpty)
                           ? e[index].pilihanJawaban.a.gambar!
-                          : null, // Jika null, jangan tampilkan gambar
+                          : null, 
                       isSelected:
                           selectedAnswer == e[index].pilihanJawaban.a.teks,
                       onChanged: (value) {
@@ -145,7 +158,7 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                       imageUrl: (e[index].pilihanJawaban.b.gambar != null &&
                               e[index].pilihanJawaban.b.gambar!.isNotEmpty)
                           ? e[index].pilihanJawaban.b.gambar!
-                          : null, // Jika null, jangan tampilkan gambar // Tambahkan ini
+                          : null, 
                       isSelected:
                           selectedAnswer == e[index].pilihanJawaban.b.teks,
                       onChanged: (value) {
