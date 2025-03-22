@@ -22,7 +22,8 @@ class QuizStartPage extends StatefulWidget {
   State<QuizStartPage> createState() => _QuizStartPageState();
 }
 
-class _QuizStartPageState extends State<QuizStartPage> {
+class _QuizStartPageState extends State<QuizStartPage>
+    with WidgetsBindingObserver {
   Timer? _timer;
   int remainingSeconds = 0;
   bool isTimeUp = false;
@@ -30,9 +31,42 @@ class _QuizStartPageState extends State<QuizStartPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     lockScreenMode();
-
     context.read<UjianBloc>().add(const UjianEvent.getAllUjian());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    debugPrint("App State: $state");
+
+    if (!mounted) return; // Hindari error jika widget sudah di-dispose
+
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      debugPrint("Menyimpan jawaban dan menghitung hasil...");
+
+      try {
+        _saveRemainingAnswers();
+        showKeluarAplikasi();
+      } catch (e, stackTrace) {
+        debugPrint("Error saat menyimpan jawaban atau menghitung hasil: $e");
+        debugPrint(stackTrace.toString());
+      }
+    } else if (state == AppLifecycleState.resumed) {
+      debugPrint("Aplikasi kembali aktif");
+      // Bisa ditambahkan logika jika perlu
+      // _calculateAndShowResult();
+      setState(() {});
+      if (_timer == null || !_timer!.isActive) {
+        startTimer(remainingSeconds ~/ 60); // Pastikan timer tetap berjalan
+      }
+      context
+          .read<DaftarSoalBloc>()
+          .add(DaftarSoalEvent.getDafatarSoal(widget.data.id.toString()));
+    }
   }
 
   void lockScreenMode() {
@@ -67,6 +101,25 @@ class _QuizStartPageState extends State<QuizStartPage> {
         title: const Text('Waktu Habis'),
         content: const Text(
             'Waktu Anda Telah Habis, Silahkan Klik Tombol Selesai Untuk Melihat Hasil'),
+        actions: [
+          TextButton(
+            onPressed: () => _calculateAndShowResult(),
+            child: const Text('Selesai'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void showKeluarAplikasi() {
+    _saveRemainingAnswers();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Kamu Keluar Aplikasi'),
+        content: const Text(
+            'Kamuu Telah Keluar Aplikasi, Silahkan Klik Tombol Selesai Untuk Melihat Hasil'),
         actions: [
           TextButton(
             onPressed: () => _calculateAndShowResult(),
@@ -134,6 +187,7 @@ class _QuizStartPageState extends State<QuizStartPage> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
     super.dispose();
   }

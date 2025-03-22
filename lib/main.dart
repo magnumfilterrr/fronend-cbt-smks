@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ujian_online_smks/data/datasources/soal_remote_datasourece.dart';
 import 'package:ujian_online_smks/data/datasources/ujian_remote_datasource.dart';
 import 'package:ujian_online_smks/firebase_options.dart';
@@ -20,7 +21,19 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await _requestLocationPermission(); // Minta izin lokasi saat aplikasi dibuka
   runApp(const MyApp());
+}
+
+Future<void> _requestLocationPermission() async {
+  LocationPermission permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+  }
+  if (permission == LocationPermission.deniedForever) {
+    debugPrint(
+        "Izin lokasi ditolak secara permanen. Harap aktifkan di pengaturan.");
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -49,7 +62,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         builder: (context, child) {
-          // Jika di Web, bungkus dengan MobileLayout
           return kIsWeb
               ? MobileLayout(child: child ?? const SizedBox())
               : child ?? const SizedBox();

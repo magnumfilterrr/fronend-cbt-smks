@@ -10,8 +10,7 @@ class QuizResultLast extends StatefulWidget {
   final double nilai;
   final double jawabanBenar;
   final double totalSoal;
-    final int remainingSeconds;
-
+  final int remainingSeconds;
 
   // ignore: use_super_parameters
   const QuizResultLast({
@@ -88,23 +87,21 @@ class _QuizResultLastState extends State<QuizResultLast> {
               ),
               Flexible(
                 flex: 1,
-                child: Column(
-                  children: [
-                    CircularStepProgressIndicator(
-                      totalSteps: totalQuestion.toInt(),
-                      currentStep: correct.toInt(),
-                      stepSize: 10,
-                      selectedColor: AppColors.green,
-                      unselectedColor: AppColors.primary,
-                      padding: 0,
-                      width: 140,
-                      height: 140,
-                      selectedStepSize: 24,
-                      unselectedStepSize: 24,
-                      roundedCap: (_, __) => true,
-                    ),
-                  ],
-                ),
+                child: Column(children: [
+                  CircularStepProgressIndicator(
+                    totalSteps: totalQuestion.toInt(),
+                    currentStep: correct.toInt(),
+                    stepSize: 10,
+                    selectedColor: AppColors.green,
+                    unselectedColor: AppColors.primary,
+                    padding: 0,
+                    width: 140,
+                    height: 140,
+                    selectedStepSize: 24,
+                    unselectedStepSize: 24,
+                    roundedCap: (_, __) => true,
+                  )
+                ]),
               ),
             ],
           ),

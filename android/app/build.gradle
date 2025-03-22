@@ -37,7 +37,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.ujian_online_smks"
-    compileSdkVersion 34
+    compileSdk 34
     // compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 

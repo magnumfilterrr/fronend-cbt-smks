@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:kiosk_mode/kiosk_mode.dart';
-// import 'package:kiosk_mode/kiosk_mode.dart';
 import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
-// import 'package:ujian_online_smks/data/datasources/ujian_remote_datasource.dart';
 import 'package:ujian_online_smks/data/models/response/ujian_response_model.dart';
 import 'package:ujian_online_smks/persentation/ujian/pages/quiz_start_page.dart';
-// import 'package:flutter/foundation.dart';
 
 import '../../../core/constants/colors.dart';
 
@@ -33,35 +31,36 @@ class _QuizCardState extends State<QuizCard> {
     super.initState();
     status = widget.data.status;
     isCompleted = widget.data.isCompleted;
-    // _startAutoUpdate();
   }
-
-  // void _startAutoUpdate() {
-  //   _timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
-  //     final response = await UjianRemoteDataSource().getUjian();
-
-  //     response.fold(
-  //       (error) =>
-  //           print('Gagal memperbarui status: $error'), // Tangani jika ada error
-  //       (updatedUjian) {
-  //         if (mounted) {
-  //           setState(() {
-  //             status = updatedUjian.status; // Perbarui status ujian
-  //           });
-  //         }
-  //       },
-  //     );
-  //   });
-  // }
 
   @override
   void dispose() {
-    _timer?.cancel(); // Hentikan timer saat widget dibuang
+    _timer?.cancel();
     super.dispose();
   }
 
   String formatTanggalUjian(DateTime tanggalUjian) {
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(tanggalUjian);
+  }
+
+  Future<bool> isInSchoolArea() async {
+    // const double schoolLatitude = -7.313225913679083;
+    // const double schoolLongitude = 107.79302367244632;
+    const double schoolLatitude = -7.307757646689883;
+    const double schoolLongitude = 107.79192107611574;
+    const double allowedDistance = 500;
+
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      double distance = Geolocator.distanceBetween(schoolLatitude,
+          schoolLongitude, position.latitude, position.longitude);
+
+      return distance <= allowedDistance;
+    } catch (e) {
+      print("Gagal mendapatkan lokasi: $e");
+      return false;
+    }
   }
 
   @override
@@ -84,20 +83,29 @@ class _QuizCardState extends State<QuizCard> {
             ),
           );
         } else if (widget.data.status == 'sedang berlangsung' && !isCompleted) {
+          bool inSchool = await isInSchoolArea();
+          if (!inSchool) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                    'Anda harus berada di area sekolah untuk mengerjakan ujian.'),
+                backgroundColor: Colors.red,
+              ),
+            );
+            return;
+          }
+
           try {
-            // Hanya jalankan Kiosk Mode jika bukan Web dan platform adalah Android
             if (!kIsWeb && Platform.isAndroid) {
               await SystemChrome.setEnabledSystemUIMode(
                   SystemUiMode.immersiveSticky);
-              await startKioskMode(); // Pastikan fungsi ini sudah didefinisikan
+              // await startKioskMode();
             }
 
-            // Navigasi ke halaman QuizStartPage
             if (mounted) {
               context.push(QuizStartPage(data: widget.data));
             }
           } catch (e) {
-            // Tangani error jika terjadi masalah saat mengaktifkan Kiosk Mode
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -161,7 +169,6 @@ class _QuizCardState extends State<QuizCard> {
                     ),
                   ),
                   const SizedBox(height: 14.0),
-                  // Tambahkan Badge Status
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -202,7 +209,6 @@ class _QuizCardState extends State<QuizCard> {
     );
   }
 
-  // Fungsi untuk menentukan warna berdasarkan status ujian
   Color getStatusColor(String status) {
     switch (status) {
       case 'belum dimulai':
