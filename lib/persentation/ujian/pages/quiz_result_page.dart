@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:kiosk_mode/kiosk_mode.dart';
+// import 'package:kiosk_mode/kiosk_mode.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ujian_online_smks/core/components/buttons.dart';
 import 'package:ujian_online_smks/core/components/custom_scaffold.dart';
@@ -109,7 +109,7 @@ class _QuizResultPageState extends State<QuizResultPage> {
                       try {
                         // Hanya jalankan stopKioskMode jika bukan Web dan platform adalah Android
                         if (!kIsWeb && Platform.isAndroid) {
-                          await stopKioskMode(); // Pastikan fungsi ini sudah didefinisikan
+                          // await stopKioskMode(); // Pastikan fungsi ini sudah didefinisikan
                         }
 
                         // Kembali ke halaman beranda

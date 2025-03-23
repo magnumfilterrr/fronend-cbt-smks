@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:kiosk_mode/kiosk_mode.dart';
+// import 'package:kiosk_mode/kiosk_mode.dart';
 import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
 import 'package:ujian_online_smks/data/models/response/ujian_response_model.dart';
 import 'package:ujian_online_smks/persentation/ujian/pages/quiz_start_page.dart';
