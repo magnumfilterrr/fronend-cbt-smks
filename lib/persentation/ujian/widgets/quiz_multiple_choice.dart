@@ -25,12 +25,29 @@ class QuizMultipleChoice extends StatefulWidget {
 class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
   String selectedAnswer = '';
   String jawaban = '';
+  Map<String, String> savedAnswers =
+      {}; // Menyimpan semua jawaban yang telah dipilih
 
   @override
   void initState() {
     super.initState();
     context.read<DaftarSoalBloc>().add(DaftarSoalEvent.started(widget.id));
-    // context.read<UjianBloc>().add(UjianEvent.checkStatus(widget.id));
+  }
+
+  // Method untuk memuat jawaban yang sudah disimpan untuk soal tertentu
+  void loadSavedAnswer(String soalId) {
+    if (savedAnswers.containsKey(soalId)) {
+      setState(() {
+        jawaban = savedAnswers[soalId]!;
+        // Anda mungkin perlu menyesuaikan selectedAnswer berdasarkan jawaban yang disimpan
+        // Ini tergantung pada bagaimana Anda ingin menampilkan jawaban yang sudah dipilih sebelumnya
+      });
+    } else {
+      setState(() {
+        jawaban = '';
+        selectedAnswer = '';
+      });
+    }
   }
 
   @override
@@ -48,7 +65,6 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                       (data['data']['jawaban_benar'] ?? 0).toDouble();
                   final double totalSoal =
                       (data['data']['total_soal'] ?? 0).toDouble();
-                  // Navigasi langsung ke halaman hasil
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => QuizResultPage(
@@ -71,6 +87,17 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
             );
           },
         ),
+        BlocListener<DaftarSoalBloc, DaftarSoalState>(
+          listener: (context, state) {
+            state.maybeWhen(
+              success: (e, index, isNext, isPrev) {
+                // Ketika soal berubah, muat jawaban yang disimpan untuk soal ini
+                loadSavedAnswer(e[index].id.toString());
+              },
+              orElse: () {},
+            );
+          },
+        ),
       ],
       child: BlocBuilder<DaftarSoalBloc, DaftarSoalState>(
         builder: (context, state) {
@@ -79,6 +106,8 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
           }, error: (message) {
             return Center(child: Text(message));
           }, success: (e, index, isNext, isPrev) {
+            final currentSoalId = e[index].id.toString();
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -109,30 +138,29 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                         ),
                       ),
                       const SizedBox(height: 20),
-
-                      // Cek apakah gambarPertanyaan tidak null dan tidak kosong sebelum menampilkan gambar
                       if (e[index].gambarPertanyaan != null &&
                           e[index].gambarPertanyaan!.isNotEmpty)
                         Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Image.network(
-                                e[index].gambarPertanyaan!,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.broken_image, size: 100),
-                              ),
-                            ],
-                          ),
-                      ],
-                    ),
+                          alignment: Alignment.center,
+                          children: [
+                            Image.network(
+                              e[index].gambarPertanyaan!,
+                              fit: BoxFit.cover,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Icon(Icons.broken_image, size: 100),
+                            ),
+                          ],
+                        ),
+                    ],
                   ),
+                ),
                 const SizedBox(height: 34.0),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,13 +170,13 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                       imageUrl: (e[index].pilihanJawaban.a.gambar != null &&
                               e[index].pilihanJawaban.a.gambar!.isNotEmpty)
                           ? e[index].pilihanJawaban.a.gambar!
-                          : null, 
-                      isSelected:
-                          selectedAnswer == e[index].pilihanJawaban.a.teks,
+                          : null,
+                      isSelected: jawaban == 'a',
                       onChanged: (value) {
                         setState(() {
-                          selectedAnswer = value;
                           jawaban = 'a';
+                          selectedAnswer = e[index].pilihanJawaban.a.teks;
+                          savedAnswers[currentSoalId] = 'a'; // Simpan jawaban
                         });
                       },
                     ),
@@ -158,13 +186,13 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                       imageUrl: (e[index].pilihanJawaban.b.gambar != null &&
                               e[index].pilihanJawaban.b.gambar!.isNotEmpty)
                           ? e[index].pilihanJawaban.b.gambar!
-                          : null, 
-                      isSelected:
-                          selectedAnswer == e[index].pilihanJawaban.b.teks,
+                          : null,
+                      isSelected: jawaban == 'b',
                       onChanged: (value) {
                         setState(() {
-                          selectedAnswer = value;
                           jawaban = 'b';
+                          selectedAnswer = e[index].pilihanJawaban.b.teks;
+                          savedAnswers[currentSoalId] = 'b'; // Simpan jawaban
                         });
                       },
                     ),
@@ -174,13 +202,13 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                       imageUrl: (e[index].pilihanJawaban.c.gambar != null &&
                               e[index].pilihanJawaban.c.gambar!.isNotEmpty)
                           ? e[index].pilihanJawaban.c.gambar!
-                          : null, // Jika null, jangan tampilkan gambar // Tambahkan ini
-                      isSelected:
-                          selectedAnswer == e[index].pilihanJawaban.c.teks,
+                          : null,
+                      isSelected: jawaban == 'c',
                       onChanged: (value) {
                         setState(() {
-                          selectedAnswer = value;
                           jawaban = 'c';
+                          selectedAnswer = e[index].pilihanJawaban.c.teks;
+                          savedAnswers[currentSoalId] = 'c'; // Simpan jawaban
                         });
                       },
                     ),
@@ -190,13 +218,13 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                       imageUrl: (e[index].pilihanJawaban.d.gambar != null &&
                               e[index].pilihanJawaban.d.gambar!.isNotEmpty)
                           ? e[index].pilihanJawaban.d.gambar!
-                          : null, // Jika null, jangan tampilkan gambar // Tambahkan ini
-                      isSelected:
-                          selectedAnswer == e[index].pilihanJawaban.d.teks,
+                          : null,
+                      isSelected: jawaban == 'd',
                       onChanged: (value) {
                         setState(() {
-                          selectedAnswer = value;
                           jawaban = 'd';
+                          selectedAnswer = e[index].pilihanJawaban.d.teks;
+                          savedAnswers[currentSoalId] = 'd'; // Simpan jawaban
                         });
                       },
                     ),
@@ -206,21 +234,17 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                 if (isPrev)
                   Button.filled(
                     onPressed: () {
+                      // Simpan jawaban saat ini sebelum pindah ke soal sebelumnya
+                      if (jawaban.isNotEmpty) {
+                        savedAnswers[currentSoalId] = jawaban;
+                      }
                       context
                           .read<DaftarSoalBloc>()
                           .add(const DaftarSoalEvent.prevSoal());
-                      setState(() {
-                        jawaban = '';
-                        selectedAnswer = '';
-                      });
                     },
                     label: 'Sebelumnya',
                   ),
-                // const SizedBox(height: 20),
-                if (isPrev)
-                  const SizedBox(
-                    height: 20,
-                  ), // Jarak antar tombol
+                if (isPrev) const SizedBox(height: 20),
                 if (jawaban.isEmpty)
                   Button.filled(
                     onPressed: () {},
@@ -230,9 +254,12 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                 else if (isNext)
                   Button.filled(
                     onPressed: () {
+                      // Simpan jawaban saat ini
+                      savedAnswers[currentSoalId] = jawaban;
+
                       context.read<JawabanBloc>().add(
                             JawabanEvent.addJawaban(
-                              soalId: e[index].id.toString(),
+                              soalId: currentSoalId,
                               jawaban: jawaban,
                             ),
                           );
@@ -241,7 +268,7 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                           .add(const DaftarSoalEvent.nextSoal());
 
                       setState(() {
-                        jawaban = '';
+                        jawaban = ''; // Reset untuk soal berikutnya
                         selectedAnswer = '';
                       });
                     },
@@ -250,9 +277,14 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                 else
                   Button.filled(
                     onPressed: () {
+                      // Pastikan jawaban terakhir disimpan
+                      if (jawaban.isNotEmpty) {
+                        savedAnswers[currentSoalId] = jawaban;
+                      }
+
                       context.read<JawabanBloc>().add(
                             JawabanEvent.addJawaban(
-                              soalId: e[index].id.toString(),
+                              soalId: currentSoalId,
                               jawaban: jawaban,
                             ),
                           );

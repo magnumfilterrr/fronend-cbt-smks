@@ -3,13 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:ujian_online_smks/data/datasources/auth_local_datasourece.dart';
 import 'package:ujian_online_smks/data/datasources/soal_remote_datasourece.dart';
 import 'package:ujian_online_smks/data/datasources/ujian_remote_datasource.dart';
+import 'package:ujian_online_smks/data/models/response/auth_response_model.dart';
 import 'package:ujian_online_smks/firebase_options.dart';
 import 'package:ujian_online_smks/persentation/auth/bloc/login/login_bloc.dart';
 import 'package:ujian_online_smks/persentation/auth/bloc/logout/bloc/logout_bloc.dart';
 import 'package:ujian_online_smks/persentation/auth/bloc/register/register_bloc.dart';
 import 'package:ujian_online_smks/persentation/auth/pages/pages_login.dart';
+import 'package:ujian_online_smks/persentation/home/pages/dashboard_pages.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/daftar_soal/daftar_soal_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/hitung_nilai/hitung_nilai_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/jawaban/jawaban_bloc.dart';
@@ -21,7 +24,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await _requestLocationPermission(); // Minta izin lokasi saat aplikasi dibuka
+  await _requestLocationPermission(); 
   runApp(const MyApp());
 }
 
@@ -66,7 +69,20 @@ class MyApp extends StatelessWidget {
               ? MobileLayout(child: child ?? const SizedBox())
               : child ?? const SizedBox();
         },
-        home: const LoginPages(), // Halaman utama
+        home: FutureBuilder<AuthResponseModel?>(
+          future: AuthLocalDataSources().getAuthData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            } else if (snapshot.hasData && snapshot.data != null) {
+              return const DashboardPage();
+            } else {
+              return const LoginPages();
+            }
+          },
+        ), // Halaman utama
       ),
     );
   }
@@ -79,17 +95,16 @@ class MobileLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200], // Warna latar luar
+      backgroundColor: Colors.grey[200],
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            maxWidth: 400, // Ukuran maksimal seperti layar mobile
+            maxWidth: 400,
           ),
           child: Container(
             height: double.infinity,
-            color: Colors.white, // Warna body utama
-            child:
-                child, // Menampilkan halaman yang dipilih (misal: LoginPages)
+            color: Colors.white,
+            child: child,
           ),
         ),
       ),

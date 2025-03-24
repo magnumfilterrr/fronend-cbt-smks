@@ -119,7 +119,7 @@ class _QuizStartPageState extends State<QuizStartPage>
       builder: (context) => AlertDialog(
         title: const Text('Kamu Keluar Aplikasi'),
         content: const Text(
-            'Kamuu Telah Keluar Aplikasi, Silahkan Klik Tombol Selesai Untuk Melihat Hasil'),
+            'Kamu Telah Keluar Aplikasi, Silahkan Klik Tombol Selesai Untuk Melihat Hasil'),
         actions: [
           TextButton(
             onPressed: () => _calculateAndShowResult(),
