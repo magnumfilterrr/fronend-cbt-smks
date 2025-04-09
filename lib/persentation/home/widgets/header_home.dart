@@ -52,7 +52,7 @@ class _HeaderHomeState extends State<HeaderHome> {
                         'Halo,',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -64,11 +64,11 @@ class _HeaderHomeState extends State<HeaderHome> {
                               snapshot.data!.data.name,
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
-                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             );
                           } else {
                             return const SizedBox();
