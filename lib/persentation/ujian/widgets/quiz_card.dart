@@ -44,11 +44,11 @@ class _QuizCardState extends State<QuizCard> {
   }
 
   Future<bool> isInSchoolArea() async {
-    // const double schoolLatitude = -7.313225913679083;
-    // const double schoolLongitude = 107.79302367244632;
-    const double schoolLatitude = -7.307757646689883;
-    const double schoolLongitude = 107.79192107611574;
-    const double allowedDistance = 500;
+    const double schoolLatitude = -7.313225913679083;
+    const double schoolLongitude = 107.79302367244632;
+    // const double schoolLatitude = -7.307757646689883;
+    // const double schoolLongitude = 107.79192107611574;
+    const double allowedDistance = 700;
 
     try {
       Position position = await Geolocator.getCurrentPosition(

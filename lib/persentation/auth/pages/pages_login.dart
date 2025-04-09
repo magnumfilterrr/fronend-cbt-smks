@@ -92,29 +92,29 @@ class _LoginPagesState extends State<LoginPages> {
             },
           ),
           const SizedBox(height: 24.0),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      const RegisterPage(), // Contoh navigasi ke HomePage
-                ),
-              );
-            },
-            child: const Text.rich(
-              TextSpan(
-                text: 'Don\'t have an account? ',
-                children: [
-                  TextSpan(
-                    text: 'Sign up',
-                    style: TextStyle(color: AppColors.primary),
-                  ),
-                ],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     Navigator.pushReplacement(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) =>
+          //             const RegisterPage(), // Contoh navigasi ke HomePage
+          //       ),
+          //     );
+          //   },
+          //   child: const Text.rich(
+          //     TextSpan(
+          //       text: 'Don\'t have an account? ',
+          //       children: [
+          //         TextSpan(
+          //           text: 'Sign up',
+          //           style: TextStyle(color: AppColors.primary),
+          //         ),
+          //       ],
+          //     ),
+          //     textAlign: TextAlign.center,
+          //   ),
+          // ),
         ],
       ),
     );
