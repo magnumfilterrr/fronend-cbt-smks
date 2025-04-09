@@ -6,7 +6,7 @@ import 'package:ujian_online_smks/core/constants/colors.dart';
 import 'package:ujian_online_smks/data/datasources/auth_local_datasourece.dart';
 import 'package:ujian_online_smks/data/models/request/login_request_model.dart';
 import 'package:ujian_online_smks/persentation/auth/bloc/login/login_bloc.dart';
-import 'package:ujian_online_smks/persentation/auth/pages/pages_register.dart';
+// import 'package:ujian_online_smks/persentation/auth/pages/pages_register.dart';
 import 'package:ujian_online_smks/persentation/home/pages/dashboard_pages.dart';
 
 class LoginPages extends StatefulWidget {
