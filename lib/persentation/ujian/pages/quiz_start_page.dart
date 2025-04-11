@@ -27,6 +27,7 @@ class _QuizStartPageState extends State<QuizStartPage>
   Timer? _timer;
   int remainingSeconds = 0;
   bool isTimeUp = false;
+  DateTime? lastActiveTime;
 
   @override
   void initState() {
@@ -36,38 +37,74 @@ class _QuizStartPageState extends State<QuizStartPage>
     context.read<UjianBloc>().add(const UjianEvent.getAllUjian());
   }
 
+  Duration allowedPauseDuration = const Duration(seconds: 15);
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
+      debugPrint("App paused/inactive");
 
-    debugPrint("App State: $state");
-
-    if (!mounted) return; // Hindari error jika widget sudah di-dispose
-
-    if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.inactive) {
-      debugPrint("Menyimpan jawaban dan menghitung hasil...");
-
-      try {
-        _saveRemainingAnswers();
-        showKeluarAplikasi();
-      } catch (e, stackTrace) {
-        debugPrint("Error saat menyimpan jawaban atau menghitung hasil: $e");
-        debugPrint(stackTrace.toString());
-      }
+      // Simpan waktu terakhir aktif
+      lastActiveTime = DateTime.now();
     } else if (state == AppLifecycleState.resumed) {
-      debugPrint("Aplikasi kembali aktif");
-      // Bisa ditambahkan logika jika perlu
-      // _calculateAndShowResult();
-      setState(() {});
-      if (_timer == null || !_timer!.isActive) {
-        startTimer(remainingSeconds ~/ 60); // Pastikan timer tetap berjalan
+      debugPrint("App resumed");
+
+      if (lastActiveTime != null) {
+        final Duration delta = DateTime.now().difference(lastActiveTime!);
+
+        // Jika waktu terjeda melebihi batas toleransi
+        if (delta > allowedPauseDuration) {
+          debugPrint("Terlalu lama pause, ujian dianggap keluar");
+          _saveRemainingAnswers();
+          showKeluarAplikasi();
+        } else {
+          debugPrint("Masih dalam batas toleransi pause");
+          // Timer tetap jalan jadi tidak perlu start ulang
+          // Tapi bisa refresh UI atau data
+          setState(() {});
+          context.read<DaftarSoalBloc>().add(
+                DaftarSoalEvent.getDafatarSoal(widget.data.id.toString()),
+              );
+        }
+
+        lastActiveTime = null;
       }
-      context
-          .read<DaftarSoalBloc>()
-          .add(DaftarSoalEvent.getDafatarSoal(widget.data.id.toString()));
     }
   }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   super.didChangeAppLifecycleState(state);
+
+  //   debugPrint("App State: $state");
+
+  //   if (!mounted) return; // Hindari error jika widget sudah di-dispose
+
+  //   if (state == AppLifecycleState.paused ||
+  //       state == AppLifecycleState.inactive) {
+  //     debugPrint("Menyimpan jawaban dan menghitung hasil...");
+
+  //     try {
+  //       _saveRemainingAnswers();
+  //       showKeluarAplikasi();
+  //     } catch (e, stackTrace) {
+  //       debugPrint("Error saat menyimpan jawaban atau menghitung hasil: $e");
+  //       debugPrint(stackTrace.toString());
+  //     }
+  //   } else if (state == AppLifecycleState.resumed) {
+  //     debugPrint("Aplikasi kembali aktif");
+  //     // Bisa ditambahkan logika jika perlu
+  //     // _calculateAndShowResult();
+  //     setState(() {});
+  //     if (_timer == null || !_timer!.isActive) {
+  //       startTimer(remainingSeconds ~/ 60); // Pastikan timer tetap berjalan
+  //     }
+  //     context
+  //         .read<DaftarSoalBloc>()
+  //         .add(DaftarSoalEvent.getDafatarSoal(widget.data.id.toString()));
+  //   }
+  // }
 
   void lockScreenMode() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
