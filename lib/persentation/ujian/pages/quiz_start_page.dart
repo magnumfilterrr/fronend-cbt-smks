@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ujian_online_smks/core/assets/assets.gen.dart';
 import 'package:ujian_online_smks/core/components/custom_scaffold.dart';
 import 'package:ujian_online_smks/core/constants/colors.dart';
+import 'package:ujian_online_smks/core/constants/visibility_handler.dart';
 import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
 import 'package:ujian_online_smks/data/models/response/ujian_response_model.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/daftar_soal/daftar_soal_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:ujian_online_smks/persentation/ujian/bloc/jawaban/jawaban_bloc.d
 import 'package:ujian_online_smks/persentation/ujian/bloc/ujian/ujian_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_multiple_choice.dart';
 import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_result_last.dart';
+import 'package:flutter/foundation.dart';
 
 class QuizStartPage extends StatefulWidget {
   final Ujian data;
@@ -28,6 +30,8 @@ class _QuizStartPageState extends State<QuizStartPage>
   int remainingSeconds = 0;
   bool isTimeUp = false;
   DateTime? lastActiveTime;
+  final VisibilityHandler _visibilityHandler = createVisibilityHandler();
+  Timer? _pauseTimer;
 
   @override
   void initState() {
@@ -35,74 +39,92 @@ class _QuizStartPageState extends State<QuizStartPage>
     WidgetsBinding.instance.addObserver(this);
     lockScreenMode();
     context.read<UjianBloc>().add(const UjianEvent.getAllUjian());
+    _visibilityHandler.init(_onHiddenTab, _onVisibleTab);
   }
 
   Duration allowedPauseDuration = const Duration(seconds: 15);
+  void _onHiddenTab() {
+    debugPrint("Tab disembunyikan (via VisibilityHandler)");
+    lastActiveTime = DateTime.now();
+  }
+
+  void _onVisibleTab() {
+    debugPrint("Tab terlihat kembali (via VisibilityHandler)");
+    if (lastActiveTime != null) {
+      final delta = DateTime.now().difference(lastActiveTime!);
+      if (delta > allowedPauseDuration) {
+        debugPrint("Terlalu lama sembunyi tab, dianggap keluar");
+        _saveRemainingAnswers();
+        showKeluarAplikasi();
+      }
+      lastActiveTime = null;
+    }
+  }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.paused) {
-      debugPrint("App paused/inactive");
-
-      // Simpan waktu terakhir aktif
-      lastActiveTime = DateTime.now();
-    } else if (state == AppLifecycleState.resumed) {
-      debugPrint("App resumed");
-
-      if (lastActiveTime != null) {
-        final Duration delta = DateTime.now().difference(lastActiveTime!);
-
-        // Jika waktu terjeda melebihi batas toleransi
-        if (delta > allowedPauseDuration) {
-          debugPrint("Terlalu lama pause, ujian dianggap keluar");
-          _saveRemainingAnswers();
-          showKeluarAplikasi();
-        } else {
-          debugPrint("Masih dalam batas toleransi pause");
-          // Timer tetap jalan jadi tidak perlu start ulang
-          // Tapi bisa refresh UI atau data
-          setState(() {});
-          context.read<DaftarSoalBloc>().add(
-                DaftarSoalEvent.getDafatarSoal(widget.data.id.toString()),
-              );
-        }
-
-        lastActiveTime = null;
+    if (!kIsWeb) {
+      if (state == AppLifecycleState.paused ||
+          state == AppLifecycleState.inactive) {
+        debugPrint("App paused/inactive (mobile)");
+        _startPauseTimer(); // ⏱️ mulai timer jika keluar aplikasi
+      } else if (state == AppLifecycleState.resumed) {
+        debugPrint("App resumed (mobile)");
+        _cancelPauseTimer(); // ✅ cancel timer saat kembali
       }
+    }
+  }
+
+  void _startPauseTimer() {
+    _pauseTimer?.cancel(); // pastikan tidak ada timer lama
+    _pauseTimer = Timer(allowedPauseDuration, () {
+      debugPrint("⏰ Timer habis, anggap keluar aplikasi");
+      _saveRemainingAnswers();
+      showKeluarAplikasi();
+    });
+  }
+
+  void _cancelPauseTimer() {
+    if (_pauseTimer?.isActive ?? false) {
+      debugPrint("✅ Kembali sebelum 15 detik, timer dibatalkan");
+      _pauseTimer?.cancel();
+      _pauseTimer = null;
+    } else {
+      // Timer sudah jalan sampai habis, dan showKeluarAplikasi sudah dipanggil
     }
   }
 
   // @override
   // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   super.didChangeAppLifecycleState(state);
+  //   if (state == AppLifecycleState.inactive ||
+  //       state == AppLifecycleState.paused) {
+  //     debugPrint("App paused/inactive");
 
-  //   debugPrint("App State: $state");
-
-  //   if (!mounted) return; // Hindari error jika widget sudah di-dispose
-
-  //   if (state == AppLifecycleState.paused ||
-  //       state == AppLifecycleState.inactive) {
-  //     debugPrint("Menyimpan jawaban dan menghitung hasil...");
-
-  //     try {
-  //       _saveRemainingAnswers();
-  //       showKeluarAplikasi();
-  //     } catch (e, stackTrace) {
-  //       debugPrint("Error saat menyimpan jawaban atau menghitung hasil: $e");
-  //       debugPrint(stackTrace.toString());
-  //     }
+  //     // Simpan waktu terakhir aktif
+  //     lastActiveTime = DateTime.now();
   //   } else if (state == AppLifecycleState.resumed) {
-  //     debugPrint("Aplikasi kembali aktif");
-  //     // Bisa ditambahkan logika jika perlu
-  //     // _calculateAndShowResult();
-  //     setState(() {});
-  //     if (_timer == null || !_timer!.isActive) {
-  //       startTimer(remainingSeconds ~/ 60); // Pastikan timer tetap berjalan
+  //     debugPrint("App resumed");
+
+  //     if (lastActiveTime != null) {
+  //       final Duration delta = DateTime.now().difference(lastActiveTime!);
+
+  //       // Jika waktu terjeda melebihi batas toleransi
+  //       if (delta > allowedPauseDuration) {
+  //         debugPrint("Terlalu lama pause, ujian dianggap keluar");
+  //         _saveRemainingAnswers();
+  //         showKeluarAplikasi();
+  //       } else {
+  //         debugPrint("Masih dalam batas toleransi pause");
+  //         // Timer tetap jalan jadi tidak perlu start ulang
+  //         // Tapi bisa refresh UI atau data
+  //         setState(() {});
+  //         context.read<DaftarSoalBloc>().add(
+  //               DaftarSoalEvent.getDafatarSoal(widget.data.id.toString()),
+  //             );
+  //       }
+
+  //       lastActiveTime = null;
   //     }
-  //     context
-  //         .read<DaftarSoalBloc>()
-  //         .add(DaftarSoalEvent.getDafatarSoal(widget.data.id.toString()));
   //   }
   // }
 
@@ -225,7 +247,9 @@ class _QuizStartPageState extends State<QuizStartPage>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _visibilityHandler.dispose();
     _timer?.cancel();
+    _pauseTimer?.cancel();
     super.dispose();
   }
 
