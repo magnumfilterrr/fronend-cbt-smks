@@ -43,25 +43,25 @@ class _QuizCardState extends State<QuizCard> {
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(tanggalUjian);
   }
 
-  Future<bool> isInSchoolArea() async {
-    const double schoolLatitude = -7.313225913679083;
-    const double schoolLongitude = 107.79302367244632;
-    // const double schoolLatitude = -7.307757646689883;
-    // const double schoolLongitude = 107.79192107611574;
-    const double allowedDistance = 700;
+  // Future<bool> isInSchoolArea() async {
+  //   const double schoolLatitude = -7.313225913679083;
+  //   const double schoolLongitude = 107.79302367244632;
+  //   // const double schoolLatitude = -7.307757646689883;
+  //   // const double schoolLongitude = 107.79192107611574;
+  //   const double allowedDistance = 2000;
 
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      double distance = Geolocator.distanceBetween(schoolLatitude,
-          schoolLongitude, position.latitude, position.longitude);
+  //   try {
+  //     Position position = await Geolocator.getCurrentPosition(
+  //         desiredAccuracy: LocationAccuracy.high);
+  //     double distance = Geolocator.distanceBetween(schoolLatitude,
+  //         schoolLongitude, position.latitude, position.longitude);
 
-      return distance <= allowedDistance;
-    } catch (e) {
-      print("Gagal mendapatkan lokasi: $e");
-      return false;
-    }
-  }
+  //     return distance <= allowedDistance;
+  //   } catch (e) {
+  //     print("Gagal mendapatkan lokasi: $e");
+  //     return false;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -83,17 +83,17 @@ class _QuizCardState extends State<QuizCard> {
             ),
           );
         } else if (widget.data.status == 'sedang berlangsung' && !isCompleted) {
-          bool inSchool = await isInSchoolArea();
-          if (!inSchool) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                    'Anda harus berada di area sekolah untuk mengerjakan ujian.'),
-                backgroundColor: Colors.red,
-              ),
-            );
-            return;
-          }
+          // bool inSchool = await isInSchoolArea();
+          // if (!inSchool) {
+          //   ScaffoldMessenger.of(context).showSnackBar(
+          //     const SnackBar(
+          //       content: Text(
+          //           'Anda harus berada di area sekolah untuk mengerjakan ujian.'),
+          //       backgroundColor: Colors.red,
+          //     ),
+          //   );
+          //   return;
+          // }
 
           try {
             if (!kIsWeb && Platform.isAndroid) {

@@ -145,7 +145,7 @@ class _QuizMultipleChoiceState extends State<QuizMultipleChoice> {
                           children: [
                             Image.network(
                               e[index].gambarPertanyaan!,
-                              fit: BoxFit.cover,
+                            fit: BoxFit.cover,
                               loadingBuilder:
                                   (context, child, loadingProgress) {
                                 if (loadingProgress == null) return child;

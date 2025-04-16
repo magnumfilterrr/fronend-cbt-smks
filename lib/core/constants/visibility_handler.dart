@@ -6,5 +6,4 @@ abstract class VisibilityHandler {
   void dispose();
 }
 
-// Tambahkan factory function ini:
 VisibilityHandler createVisibilityHandler() => VisibilityHandlerImpl();

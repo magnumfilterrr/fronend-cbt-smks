@@ -32,6 +32,8 @@ class _QuizStartPageState extends State<QuizStartPage>
   DateTime? lastActiveTime;
   final VisibilityHandler _visibilityHandler = createVisibilityHandler();
   Timer? _pauseTimer;
+  bool isNavigatingToResult = false;
+  bool logEnabled = true; 
 
   @override
   void initState() {
@@ -44,11 +46,13 @@ class _QuizStartPageState extends State<QuizStartPage>
 
   Duration allowedPauseDuration = const Duration(seconds: 15);
   void _onHiddenTab() {
+    if (isNavigatingToResult || !logEnabled) return;
     debugPrint("Tab disembunyikan (via VisibilityHandler)");
     lastActiveTime = DateTime.now();
   }
 
   void _onVisibleTab() {
+    if (isNavigatingToResult || !logEnabled) return;
     debugPrint("Tab terlihat kembali (via VisibilityHandler)");
     if (lastActiveTime != null) {
       final delta = DateTime.now().difference(lastActiveTime!);
@@ -209,7 +213,13 @@ class _QuizStartPageState extends State<QuizStartPage>
   }
 
   void _navigateToResult(double nilai, int jawabanBenar, int totalSoal) {
+    isNavigatingToResult = true;
+    logEnabled = false; 
     final remainingTime = remainingSeconds;
+    // Hentikan timer dan visibility handler sebelum pindah ke halaman hasil
+    _visibilityHandler.dispose();
+    _timer?.cancel();
+    _pauseTimer?.cancel();
     context.pushReplacement(QuizResultLast(
       id: widget.data.id.toString(),
       nilai: nilai,
