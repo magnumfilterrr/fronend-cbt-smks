@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 // import 'package:kiosk_mode/kiosk_mode.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +8,7 @@ import 'package:ujian_online_smks/core/constants/colors.dart';
 import 'package:ujian_online_smks/core/extensions/build_context_ext.dart';
 import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_result_last.dart';
 
-class QuizResultPage extends StatefulWidget {
+class QuizResultPage extends StatelessWidget {
   final String id;
   final double nilai;
   final double jawabanBenar;
@@ -25,43 +23,6 @@ class QuizResultPage extends StatefulWidget {
     required this.totalSoal,
     required this.remainingSeconds,
   });
-
-  @override
-  State<QuizResultPage> createState() => _QuizResultPageState();
-}
-
-class _QuizResultPageState extends State<QuizResultPage> {
-  late int remainingTime;
-  Timer? _timer;
-  bool isTimeUp = false;
-
-  @override
-  void initState() {
-    super.initState();
-    remainingTime = widget.remainingSeconds ~/ 60;
-    isTimeUp = remainingTime <= 0;
-
-    if (remainingTime > 0) {
-      _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
-        if (remainingTime > 0) {
-          setState(() {
-            remainingTime--;
-            if (remainingTime == 0) {
-              isTimeUp = true; // Perbarui state waktu habis
-            }
-          });
-        } else {
-          _timer?.cancel();
-        }
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,60 +42,44 @@ class _QuizResultPageState extends State<QuizResultPage> {
             Padding(
               padding: paddingHorizontal,
               child: QuizResultLast(
-                id: widget.id,
-                nilai: widget.nilai,
-                jawabanBenar: widget.jawabanBenar,
-                totalSoal: widget.totalSoal,
-                remainingSeconds: remainingTime,
+                id: id,
+                nilai: nilai,
+                jawabanBenar: jawabanBenar,
+                totalSoal: totalSoal,
+                // remainingSeconds: remainingSeconds,
               ),
-            ),
-            const SizedBox(height: 40.0),
-            Text(
-              'Sisa Waktu: $remainingTime Menit',
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30.0),
           ],
         ),
       ),
-      bottomNavigationBar: StatefulBuilder(
-        builder: (context, setState) {
-          return Container(
-            color: AppColors.white,
-            padding: const EdgeInsets.all(16.0),
-            child: Button.filled(
-              onPressed: isTimeUp
-                  ? () async {
-                      try {
-                        // Hanya jalankan stopKioskMode jika bukan Web dan platform adalah Android
-                        if (!kIsWeb && Platform.isAndroid) {
-                          // await stopKioskMode(); // Pastikan fungsi ini sudah didefinisikan
-                        }
+      bottomNavigationBar: Container(
+        color: AppColors.white,
+        padding: const EdgeInsets.all(16.0),
+        child: Button.filled(
+          onPressed: () async {
+            try {
+              // Jika bukan Web dan Android, hentikan Kiosk Mode
+              if (!kIsWeb && Platform.isAndroid) {
+                // await stopKioskMode(); // Uncomment jika digunakan
+              }
 
-                        // Kembali ke halaman beranda
-                        if (mounted) {
-                          context.popToRoot();
-                        }
-                      } catch (e) {
-                        // Tangani error jika terjadi masalah saat menghentikan Kiosk Mode
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Terjadi kesalahan: $e'),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                      }
-                    }
-                  : null, // Disabled jika waktu belum habis
-              label: 'Kembali ke Beranda',
-              disabled:
-                  !isTimeUp, // Pastikan tombol disabled jika waktu belum habis
-            ),
-          );
-        },
+              if (context.mounted) {
+                context.popToRoot();
+              }
+            } catch (e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Terjadi kesalahan: $e'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            }
+          },
+          label: 'Kembali ke Beranda',
+        ),
       ),
     );
   }

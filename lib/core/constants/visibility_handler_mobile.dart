@@ -35,4 +35,15 @@ class VisibilityHandlerImpl extends WidgetsBindingObserver
     _isDisposed = true;
     WidgetsBinding.instance.removeObserver(this);
   }
+
+  // Tambahan agar sesuai interface abstract class
+  @override
+  void setNavigatingToResult(bool value) {
+    print('[VisibilityHandler] setNavigatingToResult (mobile): $value');
+  }
+
+  @override
+  void setLogEnabled(bool value) {
+    print('[VisibilityHandler] setLogEnabled (mobile): $value');
+  }
 }

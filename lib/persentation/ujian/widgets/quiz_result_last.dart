@@ -10,7 +10,7 @@ class QuizResultLast extends StatefulWidget {
   final double nilai;
   final double jawabanBenar;
   final double totalSoal;
-  final int remainingSeconds;
+  // final int remainingSeconds;
 
   // ignore: use_super_parameters
   const QuizResultLast({
@@ -19,7 +19,7 @@ class QuizResultLast extends StatefulWidget {
     required this.nilai,
     required this.jawabanBenar,
     required this.totalSoal,
-    required this.remainingSeconds,
+    // required this.remainingSeconds,
   }) : super(key: key);
 
   @override

@@ -11,8 +11,8 @@ import 'package:ujian_online_smks/data/models/response/ujian_response_model.dart
 import 'package:ujian_online_smks/persentation/ujian/bloc/daftar_soal/daftar_soal_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/jawaban/jawaban_bloc.dart';
 import 'package:ujian_online_smks/persentation/ujian/bloc/ujian/ujian_bloc.dart';
+import 'package:ujian_online_smks/persentation/ujian/pages/quiz_result_page.dart';
 import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_multiple_choice.dart';
-import 'package:ujian_online_smks/persentation/ujian/widgets/quiz_result_last.dart';
 import 'package:flutter/foundation.dart';
 
 class QuizStartPage extends StatefulWidget {
@@ -30,10 +30,11 @@ class _QuizStartPageState extends State<QuizStartPage>
   int remainingSeconds = 0;
   bool isTimeUp = false;
   DateTime? lastActiveTime;
-  final VisibilityHandler _visibilityHandler = createVisibilityHandler();
+  VisibilityHandler? _visibilityHandler;
   Timer? _pauseTimer;
   bool isNavigatingToResult = false;
-  bool logEnabled = true; 
+  bool logEnabled = true;
+  bool isDialogShown = false;
 
   @override
   void initState() {
@@ -41,7 +42,8 @@ class _QuizStartPageState extends State<QuizStartPage>
     WidgetsBinding.instance.addObserver(this);
     lockScreenMode();
     context.read<UjianBloc>().add(const UjianEvent.getAllUjian());
-    _visibilityHandler.init(_onHiddenTab, _onVisibleTab);
+    _visibilityHandler = createVisibilityHandler();
+    _visibilityHandler!.init(_onHiddenTab, _onVisibleTab);
   }
 
   Duration allowedPauseDuration = const Duration(seconds: 15);
@@ -59,7 +61,7 @@ class _QuizStartPageState extends State<QuizStartPage>
       if (delta > allowedPauseDuration) {
         debugPrint("Terlalu lama sembunyi tab, dianggap keluar");
         _saveRemainingAnswers();
-        showKeluarAplikasi();
+        _calculateAndShowResult();
       }
       lastActiveTime = null;
     }
@@ -71,10 +73,10 @@ class _QuizStartPageState extends State<QuizStartPage>
       if (state == AppLifecycleState.paused ||
           state == AppLifecycleState.inactive) {
         debugPrint("App paused/inactive (mobile)");
-        _startPauseTimer(); // ⏱️ mulai timer jika keluar aplikasi
+        _startPauseTimer();
       } else if (state == AppLifecycleState.resumed) {
         debugPrint("App resumed (mobile)");
-        _cancelPauseTimer(); // ✅ cancel timer saat kembali
+        _cancelPauseTimer();
       }
     }
   }
@@ -84,7 +86,7 @@ class _QuizStartPageState extends State<QuizStartPage>
     _pauseTimer = Timer(allowedPauseDuration, () {
       debugPrint("⏰ Timer habis, anggap keluar aplikasi");
       _saveRemainingAnswers();
-      showKeluarAplikasi();
+      _calculateAndShowResult();
     });
   }
 
@@ -150,7 +152,7 @@ class _QuizStartPageState extends State<QuizStartPage>
             isTimeUp = true; // Set waktu habis
           });
         }
-        showTimeUpDialog();
+        _calculateAndShowResult();
       }
     });
   }
@@ -166,31 +168,45 @@ class _QuizStartPageState extends State<QuizStartPage>
             'Waktu Anda Telah Habis, Silahkan Klik Tombol Selesai Untuk Melihat Hasil'),
         actions: [
           TextButton(
-            onPressed: () => _calculateAndShowResult(),
+            onPressed: () {
+              Navigator.of(context).pop(); // Tutup dialog dulu
+            },
             child: const Text('Selesai'),
           ),
         ],
       ),
-    );
+    ).then((_) {
+      // Baru hitung hasil & navigasi setelah dialog ditutup
+      _calculateAndShowResult();
+    });
   }
 
   void showKeluarAplikasi() {
+    if (isDialogShown) return;
+    isDialogShown = true;
+
     _saveRemainingAnswers();
+
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: const Text('Kamu Keluar Aplikasi'),
         content: const Text(
-            'Kamu Telah Keluar Aplikasi, Silahkan Klik Tombol Selesai Untuk Melihat Hasil'),
+          'Kamu Telah Keluar Aplikasi, Silahkan Klik Tombol Selesai Untuk Melihat Hasil',
+        ),
         actions: [
           TextButton(
-            onPressed: () => _calculateAndShowResult(),
+            onPressed: () {
+              Navigator.of(context).pop(); // Tutup dialog dulu
+            },
             child: const Text('Selesai'),
           ),
         ],
       ),
-    );
+    ).then((_) {
+      _calculateAndShowResult();
+    });
   }
 
   void _calculateAndShowResult() {
@@ -214,19 +230,21 @@ class _QuizStartPageState extends State<QuizStartPage>
 
   void _navigateToResult(double nilai, int jawabanBenar, int totalSoal) {
     isNavigatingToResult = true;
-    logEnabled = false; 
-    final remainingTime = remainingSeconds;
-    // Hentikan timer dan visibility handler sebelum pindah ke halaman hasil
-    _visibilityHandler.dispose();
+    _visibilityHandler?.setNavigatingToResult(true);
+    _visibilityHandler?.setLogEnabled(false);
+    _visibilityHandler?.dispose();
     _timer?.cancel();
     _pauseTimer?.cancel();
-    context.pushReplacement(QuizResultLast(
-      id: widget.data.id.toString(),
-      nilai: nilai,
-      jawabanBenar: jawabanBenar.toDouble(),
-      totalSoal: totalSoal.toDouble(),
-      remainingSeconds: remainingTime,
-    ));
+
+    context.pushReplacement(
+      QuizResultPage(
+        id: widget.data.id.toString(),
+        nilai: nilai,
+        jawabanBenar: jawabanBenar.toDouble(),
+        totalSoal: totalSoal.toDouble(),
+        remainingSeconds: remainingSeconds,
+      ),
+    );
   }
 
   void _saveRemainingAnswers() {
@@ -256,8 +274,9 @@ class _QuizStartPageState extends State<QuizStartPage>
 
   @override
   void dispose() {
+    isDialogShown = false; // reset di sini
     WidgetsBinding.instance.removeObserver(this);
-    _visibilityHandler.dispose();
+    _visibilityHandler?.dispose();
     _timer?.cancel();
     _pauseTimer?.cancel();
     super.dispose();
